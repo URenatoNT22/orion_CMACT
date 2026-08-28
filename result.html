@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Resultado</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .result-wrap {
+      width: 100%;
+      max-width: 500px;
+      padding: var(--space-xl);
+    }
+    .rules-summary {
+      margin: var(--space-lg) 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .rules-title {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px var(--space-md);
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .agency-box {
+      background: var(--color-accent-light);
+      border: 1px solid #B3D9EC;
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin: var(--space-lg) 0;
+      font-size: var(--font-size-sm);
+      color: var(--color-primary);
+    }
+    .agency-box strong { display: block; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <div class="layout-client">
+    <div class="card result-wrap" id="result-container">
+      <!-- Contenido inyectado por JS -->
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/data.js"></script>
+  <script>
+    const { client, checkResults, apto } = State.get();
+
+    if (!client) { window.location.href = 'index.html'; }
+
+    const agency = DATA.agencies.find(a => a.id === client.agency);
+    const container = document.getElementById('result-container');
+
+    // Render reglas evaluadas
+    const rulesHTML = checkResults.map(r => `
+      <div class="rule-row ${r.passed ? 'rule-pass' : 'rule-fail'}">
+        <span class="rule-icon">${r.passed ? '✅' : '❌'}</span>
+        <span class="rule-label">${r.label}</span>
+        ${!r.passed ? `<span class="rule-detail">${r.reason}</span>` : ''}
+      </div>
+    `).join('');
+
+    if (apto) {
+      container.innerHTML = `
+        <div class="result-screen result-apto">
+          <div class="result-icon">✅</div>
+          <div class="result-title">¡Precalificado!</div>
+          <p class="result-msg">Hola <strong>${client.name}</strong>, cumples los criterios iniciales para solicitar un crédito de tipo <strong>${client.creditType}</strong>.</p>
+          <div class="agency-box">
+            <strong>📍 Acércate a tu agencia</strong>
+            ${agency?.name || 'Agencia seleccionada'} — ${agency?.advisor || 'Un asesor te atenderá'}
+          </div>
+          <div class="rules-summary">
+            <div class="rules-title">Criterios evaluados</div>
+            ${rulesHTML}
+          </div>
+          <a href="index.html" class="btn btn-outline btn-block" style="margin-top: var(--space-md);">Nueva consulta</a>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="result-screen result-no-apto">
+          <div class="result-icon">❌</div>
+          <div class="result-title">No precalificado</div>
+          <p class="result-msg">En este momento no cumples los criterios mínimos para iniciar una operación crediticia. Te invitamos a intentarlo nuevamente en el futuro.</p>
+          <div class="rules-summary" style="margin-top: var(--space-lg);">
+            <div class="rules-title">Criterios evaluados</div>
+            ${rulesHTML}
+          </div>
+          <a href="index.html" class="btn btn-outline btn-block" style="margin-top: var(--space-lg);">Volver al inicio</a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

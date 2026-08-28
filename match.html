@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Match</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .client-info-bar {
+      background: var(--color-accent-light);
+      border: 1px solid #B3D9EC;
+      border-radius: var(--radius-md);
+      padding: 10px var(--space-md);
+      font-size: var(--font-size-sm);
+      color: var(--color-primary);
+      margin-bottom: var(--space-lg);
+    }
+    .match-summary {
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-md);
+    }
+    .tree-node-product {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-sm);
+      overflow: hidden;
+      background: var(--color-surface);
+    }
+    .tree-node-product.tree-pass { border-left: 4px solid var(--color-apto); }
+    .tree-node-product.tree-fail { border-left: 4px solid var(--color-no-apto); opacity: 0.75; }
+    .product-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      cursor: pointer;
+      user-select: none;
+    }
+    .product-header:hover { background: var(--color-bg); }
+    .product-name  { flex: 1; font-weight: 600; font-size: var(--font-size-sm); }
+    .product-amount { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+    .product-toggle { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+    .product-checks { display: none; border-top: 1px solid var(--color-border); }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">ORI<span>ON</span></div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-label">Asesor</span>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="notifications.html">🔔 Notificaciones</a>
+      <span class="sidebar-label">Evaluación</span>
+      <a href="match.html" class="active">🎯 Match</a>
+      <a href="verify.html">✅ Verify</a>
+      <a href="explain.html">📋 Explain</a>
+      <span class="sidebar-label">Cliente</span>
+      <a href="index.html">➕ Nueva consulta</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Match de Productos</span>
+      <span class="topbar-phase">ORION Match</span>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Productos disponibles</div>
+        <div class="page-subtitle">Productos que califican según el perfil del cliente. Haz clic en cada uno para ver el detalle.</div>
+      </div>
+
+      <div class="client-info-bar" id="client-info">Cargando cliente...</div>
+      <div class="match-summary" id="match-summary"></div>
+
+      <div id="match-tree"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script src="js/match.js"></script>
+</body>
+</html>

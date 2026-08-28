@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Notificaciones</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .notif-list { border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
+    .notif-filters { display: flex; gap: var(--space-sm); margin-bottom: var(--space-lg); flex-wrap: wrap; }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      transition: all 0.15s;
+    }
+    .filter-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+    .notif-detail {
+      font-size: var(--font-size-xs);
+      display: flex;
+      gap: var(--space-md);
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .notif-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
+    .dot-unread {
+      width: 8px; height: 8px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">ORI<span>ON</span></div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-label">Asesor</span>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="notifications.html" class="active">🔔 Notificaciones</a>
+      <span class="sidebar-label">Evaluación</span>
+      <a href="match.html">🎯 Match</a>
+      <a href="verify.html">✅ Verify</a>
+      <a href="explain.html">📋 Explain</a>
+      <span class="sidebar-label">Cliente</span>
+      <a href="index.html">➕ Nueva consulta</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Notificaciones</span>
+      <span class="topbar-phase">ORION Check</span>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Clientes notificados</div>
+        <div class="page-subtitle">Clientes que completaron el formulario y resultaron APTOS</div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="notif-filters">
+        <button class="filter-btn active" onclick="filterNotifs('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filterNotifs('nuevo', this)">Nuevos</button>
+        <button class="filter-btn" onclick="filterNotifs('recurrente', this)">Recurrentes</button>
+        <button class="filter-btn" onclick="filterNotifs('desertado', this)">Desertados</button>
+        <button class="filter-btn" onclick="filterNotifs('unread', this)">Sin leer</button>
+      </div>
+
+      <!-- Lista -->
+      <div class="notif-list" id="notif-list"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script>
+  const badgeMap = { nuevo: 'badge-new', recurrente: 'badge-recurrent', desertado: 'badge-deserter' };
+  const statusMsg = {
+    nuevo:      'Cliente nuevo — esperar a que se apersone.',
+    recurrente: 'Cliente recurrente — puede contactar proactivamente.',
+    desertado:  'Cliente desertado — intentar recontacto.'
+  };
+
+  let current = 'todos';
+
+  function renderNotifs(filter) {
+    const list = DATA.notifications.filter(n => {
+      if (filter === 'unread') return !n.read;
+      if (filter === 'todos')  return true;
+      return n.status === filter;
+    });
+
+    const el = document.getElementById('notif-list');
+    if (!list.length) { el.innerHTML = '<div class="empty">No hay notificaciones en esta categoría.</div>'; return; }
+
+    el.innerHTML = list.map(n => `
+      <div class="notif-item ${!n.read ? 'unread' : ''}" id="notif-${n.id}">
+        ${!n.read ? '<div class="dot-unread"></div>' : '<div style="width:8px"></div>'}
+        <div class="notif-avatar">${n.clientName.charAt(0)}</div>
+        <div class="notif-body">
+          <div class="notif-name">${n.clientName} <span class="badge ${badgeMap[n.status]}">${n.status}</span></div>
+          <div class="notif-detail">
+            <span>DNI: ${n.dni}</span>
+            <span>💳 ${n.creditType}</span>
+            <span>📍 ${n.agency}</span>
+          </div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top:4px;">
+            ${statusMsg[n.status]}
+          </div>
+          <div class="notif-actions">
+            <button class="btn btn-accent btn-sm" onclick="startEval('${n.dni}', '${n.creditType}', ${n.id})">Iniciar evaluación</button>
+            <button class="btn btn-outline btn-sm" onclick="markRead(${n.id})">Marcar leída</button>
+          </div>
+        </div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    `).join('');
+  }
+
+  function filterNotifs(filter, btn) {
+    current = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderNotifs(filter);
+  }
+
+  function markRead(id) {
+    const n = DATA.notifications.find(n => n.id === id);
+    if (n) { n.read = true; renderNotifs(current); }
+  }
+
+  function startEval(dni, creditType, id) {
+    markRead(id);
+    const client = DATA.clients.find(c => c.dni === dni) || { dni, name: 'Cliente', status: 'nuevo' };
+    client.creditType = creditType;
+    State.set({ client });
+    window.location.href = 'match.html';
+  }
+
+  renderNotifs('todos');
+</script>
+</body>
+</html>

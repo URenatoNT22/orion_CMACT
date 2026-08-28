@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Dashboard</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+    .client-card-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .client-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .client-name { font-weight: 600; font-size: var(--font-size-base); }
+    .client-dni  { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+    .client-meta {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+    .client-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-xs); }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">ORI<span>ON</span><div style="font-size:9px;color:#888;font-weight:400;letter-spacing:1px;margin-top:2px;">CAJA TRUJILLO</div></div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-label">Asesor</span>
+      <a href="dashboard.html" class="active">📊 Dashboard</a>
+      <a href="notifications.html">🔔 Notificaciones</a>
+      <span class="sidebar-label">Evaluación</span>
+      <a href="match.html">🎯 Match</a>
+      <a href="verify.html">✅ Verify</a>
+      <a href="explain.html">📋 Explain</a>
+      <span class="sidebar-label">Cliente</span>
+      <a href="index.html">➕ Nueva consulta</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Dashboard del Asesor</span>
+      <span class="topbar-phase">ORION</span>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Bienvenido, Asesor</div>
+        <div class="page-subtitle">Resumen de clientes asignados hoy</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats"></div>
+
+      <!-- Clientes asignados -->
+      <div class="card">
+        <div class="card-title">Clientes asignados</div>
+        <div class="clients-grid" id="clients-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script>
+  const notifs = DATA.notifications;
+  const unread = notifs.filter(n => !n.read).length;
+  const nuevos = notifs.filter(n => n.status === 'nuevo').length;
+  const recurrentes = notifs.filter(n => n.status === 'recurrente').length;
+
+  // Stats
+  document.getElementById('stats').innerHTML = [
+    { value: notifs.length, label: 'Clientes asignados' },
+    { value: unread,        label: 'Sin atender' },
+    { value: nuevos,        label: 'Clientes nuevos' },
+    { value: recurrentes,   label: 'Recurrentes' },
+  ].map(s => `
+    <div class="stat-card">
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+
+  // Lista de clientes
+  const badgeMap = { nuevo: 'badge-new', recurrente: 'badge-recurrent', desertado: 'badge-deserter' };
+
+  document.getElementById('clients-list').innerHTML = notifs.map(n => `
+    <div class="client-card-item">
+      <div class="client-card-top">
+        <div>
+          <div class="client-name">${n.clientName}</div>
+          <div class="client-dni">DNI: ${n.dni}</div>
+        </div>
+        <span class="badge ${badgeMap[n.status]}">${n.status}</span>
+      </div>
+      <div class="client-meta">
+        <span>💳 ${n.creditType}</span>
+        <span>📍 ${n.agency}</span>
+        <span>🕐 ${n.time}</span>
+      </div>
+      <div class="client-actions">
+        <button class="btn btn-accent btn-sm" onclick="startEval('${n.dni}', '${n.creditType}')">Iniciar evaluación</button>
+        <a href="notifications.html" class="btn btn-outline btn-sm">Ver detalle</a>
+      </div>
+    </div>
+  `).join('');
+
+  function startEval(dni, creditType) {
+    const client = DATA.clients.find(c => c.dni === dni) || { dni, name: 'Cliente', creditType, status: 'nuevo' };
+    client.creditType = creditType;
+    State.set({ client });
+    window.location.href = 'match.html';
+  }
+</script>
+</body>
+</html>

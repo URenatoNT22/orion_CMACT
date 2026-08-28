@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Verify</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .verify-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .product-badge {
+      display: inline-block;
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-md);
+    }
+    .param-section { margin-bottom: var(--space-lg); }
+    .param-title {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--space-sm);
+    }
+    .verify-result { display: none; }
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+    }
+    .rules-box {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    @media (max-width: 768px) {
+      .verify-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">ORI<span>ON</span></div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-label">Asesor</span>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="notifications.html">🔔 Notificaciones</a>
+      <span class="sidebar-label">Evaluación</span>
+      <a href="match.html">🎯 Match</a>
+      <a href="verify.html" class="active">✅ Verify</a>
+      <a href="explain.html">📋 Explain</a>
+      <span class="sidebar-label">Cliente</span>
+      <a href="index.html">➕ Nueva consulta</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Verificación de Condiciones</span>
+      <span class="topbar-phase">ORION Verify</span>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title" id="product-title">Cargando producto...</div>
+        <div class="page-subtitle" id="product-meta"></div>
+      </div>
+
+      <div class="verify-grid">
+
+        <!-- Panel izquierdo: parámetros -->
+        <div class="card">
+          <div class="card-title">Parámetros de la operación</div>
+
+          <div class="param-section">
+            <div class="param-title">Monto solicitado</div>
+            <div class="form-group">
+              <input id="input-amount" type="number" class="form-control" placeholder="Ej: 15000" min="500">
+            </div>
+          </div>
+
+          <div class="param-section">
+            <div class="param-title">Plazo</div>
+            <div class="form-group">
+              <select id="input-term" class="form-control">
+                <option value="">Selecciona plazo</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btn-verify" class="btn btn-primary btn-block">Evaluar condiciones</button>
+          <a href="match.html" class="btn btn-outline btn-block" style="margin-top: var(--space-sm);">← Volver al Match</a>
+        </div>
+
+        <!-- Panel derecho: resultado -->
+        <div class="card verify-result" id="verify-result">
+          <div class="result-header">
+            <div class="card-title" style="margin-bottom:0">Resultado de evaluación</div>
+            <div id="verify-status"></div>
+          </div>
+
+          <div class="rules-box" id="rules-detail"></div>
+
+          <div style="margin-top: var(--space-lg); display: flex; gap: var(--space-sm);">
+            <button id="btn-explain" class="btn btn-accent" style="display:none">Ver guía operativa →</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script src="js/verify.js"></script>
+</body>
+</html>

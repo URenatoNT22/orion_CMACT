@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Explain</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .explain-wrap { max-width: 760px; }
+    @media print {
+      .sidebar, .topbar { display: none; }
+      .main { margin-left: 0; }
+      .content { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">ORI<span>ON</span></div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-label">Asesor</span>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="notifications.html">🔔 Notificaciones</a>
+      <span class="sidebar-label">Evaluación</span>
+      <a href="match.html">🎯 Match</a>
+      <a href="verify.html">✅ Verify</a>
+      <a href="explain.html" class="active">📋 Explain</a>
+      <span class="sidebar-label">Cliente</span>
+      <a href="index.html">➕ Nueva consulta</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Guía Operativa</span>
+      <span class="topbar-phase">ORION Explain</span>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Guía para completar la operación</div>
+        <div class="page-subtitle">Requisitos, pasos y sustentos normativos para el producto aprobado</div>
+      </div>
+
+      <div class="explain-wrap" id="explain-content">
+        <div class="empty">Cargando guía operativa...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/state.js"></script>
+<script src="js/data.js"></script>
+<script src="js/explain.js"></script>
+</body>
+</html>

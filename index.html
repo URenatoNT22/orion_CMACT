@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION – Precalificación</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .client-card {
+      width: 100%;
+      max-width: 460px;
+      padding: var(--space-xl);
+    }
+    .client-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+    .orion-logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: 4px;
+    }
+    .orion-logo span { color: var(--color-accent); }
+    .orion-phase {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      margin-top: var(--space-xs);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: var(--space-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout-client">
+    <div class="card client-card">
+      <div class="client-header">
+        <div class="orion-logo">ORI<span>ON</span></div>
+        <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:2px;">Caja Trujillo</div>
+        <div class="orion-phase">Check — Precalificación</div>
+      </div>
+
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Completa tu información para verificar si puedes iniciar una operación crediticia.
+      </p>
+
+      <!-- Tipo y número de documento -->
+      <div class="form-group">
+        <label class="form-label">Documento de identidad</label>
+        <div class="form-row">
+          <select id="doc-type" class="form-control">
+            <option value="DNI">DNI</option>
+            <option value="CE">Carné de Extranjería</option>
+            <option value="RUC">RUC</option>
+          </select>
+          <div>
+            <input id="doc-num" type="text" class="form-control" placeholder="Nº de documento" maxlength="11">
+            <span class="form-error" id="doc-num-error">Ingresa tu número de documento</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipo de crédito -->
+      <div class="form-group">
+        <label class="form-label" for="credit-type">Tipo de crédito</label>
+        <select id="credit-type" class="form-control">
+          <option value="">Selecciona una opción</option>
+          <option value="Consumo">Consumo</option>
+          <option value="Empresarial">Empresarial</option>
+          <option value="Hipotecario">Hipotecario</option>
+        </select>
+        <span class="form-error" id="credit-type-error">Selecciona el tipo de crédito</span>
+      </div>
+
+      <!-- Agencia -->
+      <div class="form-group">
+        <label class="form-label" for="agency">Agencia de preferencia</label>
+        <select id="agency" class="form-control">
+          <option value="">Selecciona una agencia</option>
+          <option value="trujillo-centro">Trujillo Centro</option>
+          <option value="trujillo-norte">Trujillo Norte</option>
+          <option value="trujillo-sur">Trujillo Sur</option>
+        </select>
+        <span class="form-error" id="agency-error">Selecciona una agencia</span>
+      </div>
+
+      <button id="btn-check" class="btn btn-primary btn-block" style="margin-top: var(--space-md);">
+        Verificar precalificación
+      </button>
+
+      <p style="font-size: var(--font-size-xs); color: var(--color-text-light); text-align:center; margin-top: var(--space-md);">
+        Tu información es evaluada de forma segura y confidencial.
+      </p>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/check.js"></script>
+</body>
+</html>

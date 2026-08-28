@@ -1,57 +1,35 @@
-:root {
-  /* ── Colores Corporativos Caja Trujillo ── */
-  --color-primary:       #CC0000;
-  --color-primary-dark:  #A80000;
-  --color-primary-light: #E53333;
-  --color-accent:        #F5A800;
-  --color-accent-light:  #FFF3D6;
+// check.js — lógica del formulario ORION Check
 
-  /* Estados */
-  --color-apto:       #1B7A4A;
-  --color-apto-bg:    #E8F5EE;
-  --color-no-apto:    #CC0000;
-  --color-no-apto-bg: #FEE9E9;
-  --color-warning:    #B45309;
-  --color-warning-bg: #FEF3C7;
-  --color-cumple:     #1B7A4A;
-  --color-no-cumple:  #CC0000;
+document.getElementById('btn-check').addEventListener('click', () => {
+  const docType   = document.getElementById('doc-type').value;
+  const docNum    = document.getElementById('doc-num').value.trim();
+  const creditType = document.getElementById('credit-type').value;
+  const agency    = document.getElementById('agency').value;
 
-  /* Neutros */
-  --color-bg:         #F5F5F5;
-  --color-surface:    #FFFFFF;
-  --color-border:     #E0E0E0;
-  --color-text:       #1A1A1A;
-  --color-text-muted: #6B6B6B;
-  --color-text-light: #9E9E9E;
+  // Validación básica
+  let valid = true;
+  [['doc-num', docNum], ['credit-type', creditType], ['agency', agency]].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById(id + '-error');
+    if (!val) { el.classList.add('invalid'); if (err) err.classList.add('show'); valid = false; }
+    else       { el.classList.remove('invalid'); if (err) err.classList.remove('show'); }
+  });
+  if (!valid) return;
 
-  /* Sidebar */
-  --sidebar-bg:     #1A1A1A;
-  --sidebar-text:   #CCCCCC;
-  --sidebar-active: #F5A800;
-  --sidebar-width:  220px;
+  // Buscar cliente en mock
+  const client = DATA.clients.find(c => c.dni === docNum) || {
+    dni: docNum, name: 'Cliente Nuevo', type: docType,
+    status: 'nuevo', creditScore: 650, income: 3000, debt: 0, age: 30,
+    agency
+  };
+  client.creditType = creditType;
+  client.agency = agency;
 
-  /* Tipografía */
-  --font-main:       'Inter', system-ui, sans-serif;
-  --font-size-xs:    11px;
-  --font-size-sm:    13px;
-  --font-size-base:  14px;
-  --font-size-md:    16px;
-  --font-size-lg:    20px;
-  --font-size-xl:    24px;
+  // Evaluar reglas de check
+  const results = DATA.checkRules.map(r => ({ ...r, passed: r.check(client) }));
+  const apto = results.every(r => r.passed);
 
-  /* Espaciado */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-
-  /* Bordes */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  /* Sombras */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-}
+  // Guardar en state y redirigir
+  State.set({ client, checkResults: results, apto });
+  window.location.href = 'result.html';
+});

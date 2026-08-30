@@ -22,20 +22,75 @@
       transition: all 0.15s;
     }
     .filter-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
-    .notif-detail {
-      font-size: var(--font-size-xs);
+    .notif-detail { font-size: var(--font-size-xs); display: flex; gap: var(--space-md); margin-top: 4px; flex-wrap: wrap; }
+    .notif-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
+    .dot-unread { width: 8px; height: 8px; background: var(--color-primary); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+    /* ── TOAST NOTIFICACIÓN EN TIEMPO REAL ── */
+    #live-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      width: 340px;
+      background: #fff;
+      border-left: 5px solid var(--color-primary);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: var(--space-md);
       display: flex;
       gap: var(--space-md);
-      margin-top: 4px;
-      flex-wrap: wrap;
+      align-items: flex-start;
+      transform: translateX(380px);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
+      pointer-events: none;
     }
-    .notif-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
-    .dot-unread {
-      width: 8px; height: 8px;
-      background: var(--color-accent);
+    #live-toast.show {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .toast-icon {
+      width: 40px; height: 40px;
+      background: var(--color-primary);
+      color: #fff;
       border-radius: 50%;
-      margin-top: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
       flex-shrink: 0;
+    }
+    .toast-body { flex: 1; }
+    .toast-label {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .toast-name { font-weight: 700; font-size: var(--font-size-sm); }
+    .toast-meta { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
+    .toast-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--color-text-light); font-size: 16px; line-height: 1;
+      padding: 0; flex-shrink: 0;
+    }
+    .toast-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
+
+    /* Pulso en el badge de notif nueva */
+    @keyframes pulse-red {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(204,0,0,0.4); }
+      50%       { box-shadow: 0 0 0 6px rgba(204,0,0,0); }
+    }
+    .notif-item.new-live {
+      animation: slideIn 0.4s ease;
+      background: #fff8f8;
+      border-left: 3px solid var(--color-primary);
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -43,7 +98,7 @@
 <div class="layout">
 
   <aside class="sidebar">
-    <div class="sidebar-logo">ORI<span>ON</span></div>
+    <div class="sidebar-logo">ORI<span>ON</span><div style="font-size:9px;color:#888;font-weight:400;letter-spacing:1px;margin-top:2px;">CAJA TRUJILLO</div></div>
     <nav class="sidebar-nav">
       <span class="sidebar-label">Asesor</span>
       <a href="dashboard.html">📊 Dashboard</a>
@@ -66,10 +121,9 @@
     <div class="content">
       <div class="page-header">
         <div class="page-title">Clientes notificados</div>
-        <div class="page-subtitle">Clientes que completaron el formulario y resultaron APTOS</div>
+        <div class="page-subtitle">Clientes que completaron el formulario y resultaron APTOS — las notificaciones llegan en tiempo real</div>
       </div>
 
-      <!-- Filtros -->
       <div class="notif-filters">
         <button class="filter-btn active" onclick="filterNotifs('todos', this)">Todos</button>
         <button class="filter-btn" onclick="filterNotifs('nuevo', this)">Nuevos</button>
@@ -78,24 +132,41 @@
         <button class="filter-btn" onclick="filterNotifs('unread', this)">Sin leer</button>
       </div>
 
-      <!-- Lista -->
       <div class="notif-list" id="notif-list"></div>
     </div>
   </div>
 </div>
 
+<!-- Toast notificación en tiempo real -->
+<div id="live-toast">
+  <div class="toast-icon">🔔</div>
+  <div class="toast-body">
+    <div class="toast-label">⚡ Cliente APTO — nuevo ingreso</div>
+    <div class="toast-name" id="toast-name"></div>
+    <div class="toast-meta" id="toast-meta"></div>
+    <div class="toast-actions">
+      <button class="btn btn-primary btn-sm" id="toast-btn-eval">Iniciar evaluación</button>
+      <button class="btn btn-outline btn-sm" onclick="closeToast()">Cerrar</button>
+    </div>
+  </div>
+  <button class="toast-close" onclick="closeToast()">✕</button>
+</div>
+
 <script src="js/state.js"></script>
 <script src="js/data.js"></script>
 <script>
-  const badgeMap = { nuevo: 'badge-new', recurrente: 'badge-recurrent', desertado: 'badge-deserter' };
+  const badgeMap  = { nuevo: 'badge-new', recurrente: 'badge-recurrent', desertado: 'badge-deserter' };
   const statusMsg = {
     nuevo:      'Cliente nuevo — esperar a que se apersone.',
     recurrente: 'Cliente recurrente — puede contactar proactivamente.',
     desertado:  'Cliente desertado — intentar recontacto.'
   };
 
-  let current = 'todos';
+  let current     = 'todos';
+  let toastTimer  = null;
+  let pendingNotif = null;
 
+  // ── Render lista ──
   function renderNotifs(filter) {
     const list = DATA.notifications.filter(n => {
       if (filter === 'unread') return !n.read;
@@ -111,17 +182,15 @@
         ${!n.read ? '<div class="dot-unread"></div>' : '<div style="width:8px"></div>'}
         <div class="notif-avatar">${n.clientName.charAt(0)}</div>
         <div class="notif-body">
-          <div class="notif-name">${n.clientName} <span class="badge ${badgeMap[n.status]}">${n.status}</span></div>
+          <div class="notif-name">${n.clientName} <span class="badge ${badgeMap[n.status] || 'badge-new'}">${n.status}</span></div>
           <div class="notif-detail">
             <span>DNI: ${n.dni}</span>
             <span>💳 ${n.creditType}</span>
             <span>📍 ${n.agency}</span>
           </div>
-          <div style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top:4px;">
-            ${statusMsg[n.status]}
-          </div>
+          <div style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:4px;">${statusMsg[n.status] || ''}</div>
           <div class="notif-actions">
-            <button class="btn btn-accent btn-sm" onclick="startEval('${n.dni}', '${n.creditType}', ${n.id})">Iniciar evaluación</button>
+            <button class="btn btn-accent btn-sm" onclick="startEval('${n.dni}','${n.creditType}',${n.id})">Iniciar evaluación</button>
             <button class="btn btn-outline btn-sm" onclick="markRead(${n.id})">Marcar leída</button>
           </div>
         </div>
@@ -143,12 +212,55 @@
   }
 
   function startEval(dni, creditType, id) {
-    markRead(id);
+    if (id) markRead(id);
     const client = DATA.clients.find(c => c.dni === dni) || { dni, name: 'Cliente', status: 'nuevo' };
     client.creditType = creditType;
     State.set({ client });
     window.location.href = 'match.html';
   }
+
+  // ── Toast en tiempo real ──
+  function showToast(notif) {
+    pendingNotif = notif;
+    document.getElementById('toast-name').textContent = notif.clientName;
+    document.getElementById('toast-meta').textContent =
+      `DNI: ${notif.dni} · ${notif.creditType} · ${notif.agency}`;
+
+    document.getElementById('toast-btn-eval').onclick = () => {
+      closeToast();
+      startEval(notif.dni, notif.creditType, null);
+    };
+
+    const toast = document.getElementById('live-toast');
+    toast.classList.add('show');
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(closeToast, 8000);
+  }
+
+  function closeToast() {
+    document.getElementById('live-toast').classList.remove('show');
+    clearTimeout(toastTimer);
+  }
+
+  // ── Inyectar notif en la lista con animación ──
+  function injectNotif(notif) {
+    DATA.notifications.unshift(notif);
+    renderNotifs(current);
+    // Resaltar la primera fila
+    const first = document.querySelector('.notif-item');
+    if (first) first.classList.add('new-live');
+  }
+
+  // ── Escuchar cambios de localStorage desde otra pestaña ──
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'orion_new_notif' && e.newValue) {
+      const notif = JSON.parse(e.newValue);
+      injectNotif(notif);
+      showToast(notif);
+      localStorage.removeItem('orion_new_notif');
+    }
+  });
 
   renderNotifs('todos');
 </script>

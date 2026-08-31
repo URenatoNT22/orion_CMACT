@@ -4,7 +4,7 @@ const DATA = {
 
   // Clientes de prueba
   clients: [
-    { dni: '12345678', name: 'Carlos Mendoza', type: 'DNI', status: 'recurrente', agency: 'trujillo-centro', creditScore: 720, income: 4500, debt: 800, age: 35 },
+    { dni: '12345678', name: 'Carlos Mendoza', type: 'DNI', status: 'recurrente', agency: 'trujillo-centro', creditScore: 720, income: 4500, debt: 3000, age: 35 },
     { dni: '87654321', name: 'Ana Ríos Torres', type: 'DNI', status: 'nuevo',      agency: 'trujillo-norte', creditScore: 680, income: 3200, debt: 200, age: 28 },
     { dni: '11223344', name: 'Pedro Salas',     type: 'DNI', status: 'desertado',  agency: 'trujillo-sur',  creditScore: 520, income: 2100, debt: 1500, age: 42 },
     { dni: '99887766', name: 'Lucía Vargas',    type: 'CE',  status: 'nuevo',      agency: 'trujillo-centro', creditScore: 750, income: 6000, debt: 0, age: 31 },
@@ -26,23 +26,23 @@ const DATA = {
   // Productos por tipo de crédito
   products: [
     {
-      id: 'p1', name: 'Crédito Personal Express',
+      id: 'p1', name: 'Crédito Consumo 1',
       creditTypes: ['Consumo'],
-      minIncome: 1500, minScore: 600, maxDebt: 1000,
+      minIncome: 1500, minScore: 600, maxDebt: 4000,
       maxAmount: 30000, terms: [12, 24, 36],
       requirements: ['DNI vigente', 'Boleta de pago últimos 3 meses', 'Recibo de servicios'],
       steps: ['Completar solicitud', 'Verificar identidad en agencia', 'Firma de contrato', 'Desembolso en 24h']
     },
     {
-      id: 'p2', name: 'Crédito Hipotecario Mi Hogar',
-      creditTypes: ['Hipotecario'],
-      minIncome: 3000, minScore: 680, maxDebt: 500,
+      id: 'p2', name: 'Crédito Consumo 2',
+      creditTypes: ['Consumo'],
+      minIncome: 3000, minScore: 680, maxDebt: 4000,
       maxAmount: 300000, terms: [60, 120, 180, 240],
       requirements: ['DNI vigente', 'Declaración de renta', 'Tasación del inmueble', 'Partida registral'],
       steps: ['Solicitud y documentación', 'Evaluación del inmueble', 'Aprobación crediticia', 'Firma en notaría', 'Desembolso']
     },
     {
-      id: 'p3', name: 'Crédito MYPE Empresarial',
+      id: 'p3', name: 'Crédito Consumo 3',
       creditTypes: ['Empresarial'],
       minIncome: 2500, minScore: 620, maxDebt: 800,
       maxAmount: 100000, terms: [12, 24, 36, 48],
@@ -50,9 +50,9 @@ const DATA = {
       steps: ['Registro de empresa', 'Evaluación financiera', 'Aprobación', 'Desembolso']
     },
     {
-      id: 'p4', name: 'Línea de Consumo Flex',
+      id: 'p4', name: 'Crédito Consumo 4',
       creditTypes: ['Consumo'],
-      minIncome: 2000, minScore: 650, maxDebt: 600,
+      minIncome: 2000, minScore: 650, maxDebt: 2300,
       maxAmount: 15000, terms: [6, 12, 18, 24],
       requirements: ['DNI vigente', 'Boleta de pago reciente'],
       steps: ['Solicitud online', 'Verificación', 'Activación de línea']

@@ -20,7 +20,7 @@ function renderMatch(results, client) {
   document.getElementById('client-info').innerHTML = `
     <strong>${client.name}</strong> &nbsp;·&nbsp; DNI: ${client.dni}
     &nbsp;·&nbsp; Crédito: <strong>${client.creditType}</strong>
-    &nbsp;·&nbsp; Score: ${client.creditScore} &nbsp;·&nbsp; Ingreso: S/ ${client.income}
+    &nbsp;·&nbsp; Score: ${client.creditScore} 
   `;
 
   document.getElementById('match-summary').innerHTML = `
@@ -31,31 +31,38 @@ function renderMatch(results, client) {
 
   document.getElementById('match-tree').innerHTML = results.map(r => `
     <div class="tree-node-product ${r.qualifies ? 'tree-pass' : 'tree-fail'}">
-      <div class="product-header" onclick="toggleProduct('prod-${r.id}')">
+      <div class="product-header" onclick="toggleProduct('prod-${r.id}', this)">
         <span class="product-icon">${r.qualifies ? '✅' : '❌'}</span>
         <span class="product-name">${r.name}</span>
         <span class="product-amount">Hasta S/ ${r.maxAmount.toLocaleString()}</span>
-        <span class="product-toggle">▾</span>
+        <span class="product-toggle" id="toggle-${r.id}">▾</span>
         ${r.qualifies
           ? `<button class="btn btn-accent btn-sm" onclick="event.stopPropagation(); selectProduct('${r.id}')">Seleccionar</button>`
           : ''}
       </div>
       <div class="product-checks" id="prod-${r.id}">
-        ${r.checks.map(c => `
-          <div class="rule-row ${c.passed ? 'rule-pass' : 'rule-fail'}">
-            <span class="rule-icon">${c.passed ? '✅' : '❌'}</span>
-            <span class="rule-label">${c.label}</span>
-            ${!c.passed ? `<span class="rule-detail">${c.reason}</span>` : ''}
-          </div>
-        `).join('')}
+        <div class="checks-tree">
+          ${r.checks.map(c => `
+            <div class="check-node ${c.passed ? 'pass' : 'fail'}">
+              <div class="check-node-row">
+                <span class="check-icon">${c.passed ? '✅' : '❌'}</span>
+                <span class="check-label">${c.label}</span>
+              </div>
+              ${!c.passed ? `<div class="check-reason">${c.reason}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
       </div>
     </div>
   `).join('');
 }
 
 function toggleProduct(id) {
-  const el = document.getElementById(id);
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  const el     = document.getElementById(id);
+  const toggle = document.getElementById('toggle-' + id.replace('prod-', ''));
+  const isOpen = el.style.display === 'block';
+  el.style.display = isOpen ? 'none' : 'block';
+  if (toggle) toggle.classList.toggle('open', !isOpen);
 }
 
 function selectProduct(productId) {

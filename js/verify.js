@@ -29,9 +29,9 @@ document.getElementById('btn-verify').addEventListener('click', () => {
     { label: 'Monto dentro del límite permitido',    passed: amount <= product.maxAmount,    reason: `Máximo permitido: S/ ${product.maxAmount.toLocaleString()}` },
     { label: 'Plazo válido para el producto',        passed: product.terms.includes(term),   reason: `Plazos válidos: ${product.terms.join(', ')} meses` },
     { label: 'Score crediticio suficiente',          passed: client.creditScore >= product.minScore, reason: `Mínimo requerido: ${product.minScore}` },
-    { label: 'Ingreso mínimo cubierto',              passed: client.income >= product.minIncome,     reason: `Ingreso mínimo: S/ ${product.minIncome}` },
+    // { label: 'Ingreso mínimo cubierto',              passed: client.income >= product.minIncome,     reason: `Ingreso mínimo: S/ ${product.minIncome}` },
     { label: 'Nivel de deuda aceptable',             passed: client.debt <= product.maxDebt,         reason: `Deuda máxima: S/ ${product.maxDebt}` },
-    { label: 'Monto no excede 6x el ingreso mensual', passed: amount <= client.income * 6,   reason: `Capacidad estimada: S/ ${(client.income * 6).toLocaleString()}` },
+    // { label: 'Monto no excede 6x el ingreso mensual', passed: amount <= client.income * 6,   reason: `Capacidad estimada: S/ ${(client.income * 6).toLocaleString()}` },
   ];
 
   const approved = rules.every(r => r.passed);

@@ -70,17 +70,13 @@
     if (apto) {
       container.innerHTML = `
         <div class="result-screen result-apto">
-          <div class="result-icon">✅</div>
-          <div class="result-title">¡Precalificado!</div>
+<div class="result-icon" style="width:100px;height:100px;margin:0 auto 20px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;color:#16a34a;font-size:58px;font-weight:800;box-shadow:0 8px 25px rgba(22,163,74,.18);">✓</div>          <div class="result-title">¡Precalificado!</div>
           <p class="result-msg">Hola <strong>${client.name}</strong>, cumples los criterios iniciales para solicitar un crédito de tipo <strong>${client.creditType}</strong>.</p>
           <div class="agency-box">
             <strong>📍 Acércate a tu agencia</strong>
             ${agency?.name || 'Agencia seleccionada'} — ${agency?.advisor || 'Un asesor te atenderá'}
           </div>
-          <div class="rules-summary">
-            <div class="rules-title">Criterios evaluados</div>
-            ${rulesHTML}
-          </div>
+          
           <a href="index.html" class="btn btn-outline btn-block" style="margin-top: var(--space-md);">Nueva consulta</a>
         </div>
       `;

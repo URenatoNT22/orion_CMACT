@@ -29,7 +29,24 @@ document.getElementById('btn-check').addEventListener('click', () => {
   const results = DATA.checkRules.map(r => ({ ...r, passed: r.check(client) }));
   const apto = results.every(r => r.passed);
 
-  // Guardar en state y redirigir
+  // Guardar en state
   State.set({ client, checkResults: results, apto });
+
+  // Disparar notificación en tiempo real al panel del asesor (solo si es APTO)
+  if (apto) {
+    const notif = {
+      id: Date.now(),
+      clientName: client.name,
+      dni: client.dni,
+      creditType: client.creditType,
+      agency: DATA.agencies.find(a => a.id === client.agency)?.name || client.agency,
+      status: client.status,
+      time: 'ahora',
+      read: false,
+      _timestamp: Date.now()
+    };
+    localStorage.setItem('orion_new_notif', JSON.stringify(notif));
+  }
+
   window.location.href = 'result.html';
 });

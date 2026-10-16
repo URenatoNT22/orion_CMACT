@@ -8,172 +8,277 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-panel: #1d1f1f;
-      --bg-hover: #2e2f2f;
-      --bg-chat:  #161717;
-      --bg-in:    #252626;
-      --bg-out:   #144d37;
-      --txt:      #e9edef;
-      --txt-sub:  #aebac1;
-      --txt-dim:  #8696a0;
-      --green:    #21c063;
-      --green-dk: #1aa657;
-      --btn-txt:  #21c063;
-      --quote:    #06cf9c;
-      --err:      #f15c6d;
+      --bg-panel:  #1d1f1f;
+      --bg-hover:  #2e2f2f;
+      --bg-chat:   #161717;
+      --bg-in:     #252626;
+      --bg-out:    #144d37;
+      --card:      #1d1f1f;
+      --card-2:    #2a2c2c;
+      --line:      #2c2e2e;
+      --txt:       #e9edef;
+      --txt-sub:   #aebac1;
+      --txt-dim:   #8696a0;
+      --green:     #21c063;
+      --green-dk:  #1aa657;
+      --green-bg:  rgba(33,192,99,.13);
+      --green-bd:  rgba(33,192,99,.32);
+      --red-txt:   #f28b82;
+      --red-bg:    rgba(242,139,130,.12);
+      --tick:      #53bdeb;
       --font: -apple-system,'Segoe UI','Helvetica Neue',Roboto,Arial,sans-serif;
     }
 
     html, body { height:100%; width:100%; overflow:hidden; background:#0a0a0a; font-family:var(--font); -webkit-font-smoothing:antialiased; }
-    .ic { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; display:block; }
 
-    .phone-wrap { width:100%; height:100%; display:flex; flex-direction:column; background:var(--bg-chat); position:relative; max-width:430px; margin:0 auto; overflow:hidden; }
+    /* ══ ÍCONOS ══ */
+    .ic { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; display:block; }
 
-    /* Status bar */
+    /* ══ WRAPPER ══ */
+    .phone-wrap { width:100%; height:100%; display:flex; flex-direction:column; background:var(--bg-chat); position:relative; max-width:430px; margin:0 auto; }
+
+    /* ══ STATUS BAR ══ */
     .status-bar { height:28px; background:var(--bg-panel); display:flex; align-items:center; justify-content:space-between; padding:0 16px; flex-shrink:0; z-index:20; }
-    .sb-time-os { font-size:12px; font-weight:600; color:var(--txt); }
+    .sb-time-os { font-size:12px; font-weight:600; color:var(--txt); letter-spacing:.3px; }
     .sb-icons-os { display:flex; align-items:center; gap:6px; color:var(--txt); }
     .sb-icons-os svg { height:12px; width:auto; fill:currentColor; }
 
-    /* Header */
-    .chat-header { background:var(--bg-panel); height:58px; padding:0 6px 0 4px; display:flex; align-items:center; gap:6px; flex-shrink:0; z-index:10; border-bottom:1px solid #2a2b2b; }
-    .ch-back { width:36px; height:36px; border:none; background:transparent; color:var(--txt); display:flex; align-items:center; justify-content:center; border-radius:50%; }
+    /* ══ HEADER CHAT ══ */
+    .chat-header { background:var(--bg-panel); height:58px; padding:0 8px 0 4px; display:flex; align-items:center; gap:6px; flex-shrink:0; z-index:10; border-bottom:1px solid #2a2b2b; }
+    .ch-back { width:36px; height:36px; border:none; background:transparent; color:var(--txt); cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:50%; flex-shrink:0; }
     .ch-back .ic { width:22px; height:22px; }
     .ch-av { width:38px; height:38px; border-radius:50%; background:#f9f8f8; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
     .ch-av img { width:120%; height:90%; object-fit:contain; }
     .ch-info { flex:1; min-width:0; }
-    .ch-name { color:var(--txt); font-size:15.5px; font-weight:500; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .ch-status { color:var(--txt-dim); font-size:12px; }
-    .icon-btn { width:38px; height:38px; border-radius:50%; border:none; background:transparent; color:var(--txt-sub); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .ch-name { color:var(--txt); font-size:15.5px; font-weight:500; line-height:1.2; display:flex; align-items:center; gap:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .verified { width:15px; height:15px; color:var(--green); }
+    .verified path:first-child { fill:currentColor; stroke:none; }
+    .verified path:last-child { stroke:#102016; stroke-width:2.6; }
+    .ch-status { color:var(--txt-dim); font-size:12px; display:flex; align-items:center; gap:5px; }
+    .live-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulse 2s infinite; display:inline-block; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(33,192,99,.5)} 50%{box-shadow:0 0 0 4px rgba(33,192,99,0)} }
+    .ch-icons { display:flex; gap:2px; }
+    .icon-btn { width:38px; height:38px; border-radius:50%; border:none; background:transparent; color:var(--txt-sub); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; }
     .icon-btn:active { background:var(--bg-hover); }
+    .icon-btn .ic { width:21px; height:21px; }
 
+    /* ══ FONDO ══ */
     .chat-bg { position:absolute; inset:0; background-image:url("wsp_fondo.png"); background-repeat:repeat; opacity:.1; pointer-events:none; z-index:0; }
 
-    /* Mensajes */
+    /* ══ MENSAJES ══ */
     .messages { flex:1; overflow-y:auto; padding:10px 4% 8px; display:flex; flex-direction:column; gap:3px; position:relative; z-index:1; -webkit-overflow-scrolling:touch; }
     .messages::-webkit-scrollbar { display:none; }
     .date-div { display:flex; justify-content:center; margin:8px 0 5px; }
-    .date-div span { background:#1a2428; color:var(--txt-sub); font-size:11.5px; padding:4px 10px; border-radius:8px; }
+    .date-div span { background:#1a2428; color:var(--txt-sub); font-size:11.5px; padding:4px 10px; border-radius:8px; box-shadow:0 1px .5px rgba(0,0,0,.3); }
     .sys-note { display:flex; justify-content:center; margin:2px 0 8px; }
-    .sys-note span { background:#1a2428; color:#d1b468; font-size:11.5px; padding:6px 10px; border-radius:8px; max-width:88%; text-align:center; line-height:1.4; }
+    .sys-note span { display:flex; align-items:center; gap:6px; background:#1a2428; color:#d1b468; font-size:11px; padding:5px 10px; border-radius:8px; max-width:88%; text-align:center; line-height:1.35; }
+    .sys-note .ic { width:12px; height:12px; }
 
-    .msg-row { display:flex; animation:fadeUp .2s ease; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-    .msg-row.in  { justify-content:flex-start; }
-    .msg-row.out { justify-content:flex-end; }
+    .msg-row { display:flex; align-items:flex-end; animation:fadeUp .22s ease; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .msg-row.in  { flex-direction:row; }
+    .msg-row.out { flex-direction:row-reverse; }
 
-    .bubble { max-width:80%; border-radius:7.5px; font-size:14.2px; line-height:19.5px; color:var(--txt); position:relative; word-wrap:break-word; box-shadow:0 1px .5px rgba(0,0,0,.28); }
-    .msg-row.in  .bubble { background:var(--bg-in); border-top-left-radius:0; }
-    .msg-row.out .bubble { background:var(--bg-out); border-top-right-radius:0; }
+    .bubble { max-width:80%; padding:6px 8px 8px; border-radius:7.5px; font-size:14px; line-height:19px; color:var(--txt); position:relative; word-wrap:break-word; box-shadow:0 1px .5px rgba(0,0,0,.28); }
+    .bubble:has(.ocard) { max-width:88%; }
+    .bubble.wide { max-width:94%; }
+    .msg-row.in .bubble  { background:var(--bg-in); border-top-left-radius:0; }
     .msg-row.in .bubble::before { content:''; position:absolute; top:0; left:-7px; border-width:0 7px 7px 0; border-style:solid; border-color:transparent var(--bg-in) transparent transparent; }
+    .msg-row.out .bubble { background:var(--bg-out); border-top-right-radius:0; }
     .msg-row.out .bubble::after { content:''; position:absolute; top:0; right:-7px; border-width:0 0 7px 7px; border-style:solid; border-color:transparent transparent transparent var(--bg-out); }
     .msg-row.in + .msg-row.in .bubble, .msg-row.out + .msg-row.out .bubble { border-radius:7.5px; }
     .msg-row.in + .msg-row.in .bubble::before, .msg-row.out + .msg-row.out .bubble::after { display:none; }
-    .msg-row.in + .msg-row.in, .msg-row.out + .msg-row.out { margin-top:-1px; }
-    .msg-row.in:not(.msg-row.in + .msg-row.in), .msg-row.out:not(.msg-row.out + .msg-row.out) { margin-top:6px; }
 
-    .b-pad { padding:6px 8px 8px; }
-    .b-text b { font-weight:700; }
-    .b-text code { font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; }
-    .msg-meta { float:right; display:flex; align-items:center; gap:3px; margin:6px 0 -5px 10px; }
-    .msg-time { font-size:11px; color:var(--txt-dim); white-space:nowrap; }
+    .msg-meta { display:flex; align-items:center; gap:3px; float:right; margin-left:8px; margin-top:4px; margin-bottom:-4px; }
+    .msg-time { font-size:10.5px; color:var(--txt-dim); white-space:nowrap; }
     .msg-row.out .msg-time { color:#8fb5a5; }
     .ticks svg { width:16px; height:11px; display:block; }
 
-    /* Cita (respuesta a un mensaje interactivo) */
-    .quote { background:rgba(0,0,0,.2); border-left:4px solid var(--quote); border-radius:6px; padding:5px 8px 6px; margin:3px 3px 4px; }
-    .quote-n { color:var(--quote); font-size:12.5px; font-weight:600; line-height:1.3; }
-    .quote-t { color:#c2d3cb; font-size:12.5px; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:230px; }
-    .bubble.has-quote { min-width:200px; }
-
-    /* Mensaje interactivo (header / body / footer + botones) */
-    .bubble.ia { width:82%; max-width:330px; }
-    .ia-hd { font-weight:700; font-size:15px; line-height:20px; margin-bottom:3px; }
-    .ia-ft { font-size:12.5px; color:var(--txt-dim); margin-top:4px; line-height:17px; }
-    .ia-btn { width:100%; display:flex; align-items:center; justify-content:center; gap:7px; border:none; background:none; border-top:1px solid #3b3d3d; color:var(--btn-txt); font-family:var(--font); font-size:14.5px; font-weight:500; padding:11px 8px; cursor:pointer; }
-    .ia-btn:active { background:rgba(255,255,255,.05); }
-    .ia-btn:last-child { border-radius:0 0 7.5px 7.5px; }
-    .ia-btn .ic { width:17px; height:17px; }
-
-    /* Imagen */
-    .bubble.img { width:82%; max-width:330px; padding:3px; }
-    .bubble.img img { width:100%; display:block; border-radius:6px; cursor:zoom-in; }
-    .img-cap { padding:6px 5px 6px; }
+    .out-line { display:flex; align-items:center; gap:6px; }
+    .out-line .ic { width:14px; height:14px; color:#9fd8bd; }
 
     /* Typing */
-    .typing-row { display:flex; margin-top:6px; }
-    .typing-bub { background:var(--bg-in); border-radius:7.5px; border-top-left-radius:0; padding:11px 14px; display:flex; gap:4px; position:relative; }
+    .typing-row { display:flex; margin-bottom:2px; }
+    .typing-bub { background:var(--bg-in); border-radius:7.5px; border-top-left-radius:0; padding:11px 14px; display:flex; gap:4px; align-items:center; box-shadow:0 1px .5px rgba(0,0,0,.28); position:relative; }
     .typing-bub::before { content:''; position:absolute; top:0; left:-7px; border-width:0 7px 7px 0; border-style:solid; border-color:transparent var(--bg-in) transparent transparent; }
     .t-dot { width:7px; height:7px; background:var(--txt-dim); border-radius:50%; animation:bounce 1.3s infinite; }
     .t-dot:nth-child(2){animation-delay:.15s} .t-dot:nth-child(3){animation-delay:.3s}
     @keyframes bounce { 0%,60%,100%{transform:translateY(0);opacity:.5} 30%{transform:translateY(-4px);opacity:1} }
 
-    /* Input bar */
-    .input-bar { background:var(--bg-panel); min-height:58px; padding:8px; display:flex; align-items:center; gap:6px; flex-shrink:0; z-index:10; border-top:1px solid #2a2b2b; }
-    .ib-box { flex:1; display:flex; align-items:center; background:var(--bg-hover); border-radius:22px; padding:0 4px; min-height:44px; }
+    /* ══ TARJETA ORION ══ */
+    .ocard { background:var(--card); border:1px solid var(--line); border-radius:8px; margin-top:6px; min-width:246px; overflow:hidden; }
+    .ocard-hd { display:flex; align-items:center; gap:10px; padding:10px 12px; }
+    .ocard-ico { width:34px; height:34px; border-radius:9px; background:var(--green-bg); color:var(--green); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ocard-ico .ic { width:18px; height:18px; }
+    .ocard-tx { flex:1; min-width:0; }
+    .brand { font-size:9.5px; font-weight:700; letter-spacing:1.4px; color:var(--green); line-height:1.2; }
+    .ocard-t { font-size:13.5px; font-weight:600; color:var(--txt); line-height:1.25; }
+    .step-pill { font-size:10px; color:var(--txt-dim); border:1px solid var(--line); border-radius:10px; padding:2px 7px; white-space:nowrap; }
+
+    /* Stepper */
+    .stepper { display:flex; gap:4px; padding:0 12px 10px; }
+    .stp { flex:1; }
+    .stp-bar { height:3px; border-radius:2px; background:#333636; }
+    .stp-l { font-size:9px; color:#5f6b72; margin-top:4px; letter-spacing:.3px; }
+    .stp.done .stp-bar { background:var(--green); }
+    .stp.done .stp-l { color:var(--txt-dim); }
+    .stp.act .stp-bar { background:var(--green); box-shadow:0 0 6px rgba(33,192,99,.5); }
+    .stp.act .stp-l { color:var(--green); font-weight:600; }
+
+    /* Cliente */
+    .client { display:flex; align-items:center; gap:10px; padding:10px 12px; border-top:1px solid var(--line); }
+    .avatar { width:38px; height:38px; border-radius:50%; background:#2f3d45; color:#cfe3ee; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; letter-spacing:.5px; }
+    .client-n { font-size:14px; font-weight:600; color:var(--txt); line-height:1.25; }
+    .client-m { font-size:11.5px; color:var(--txt-dim); display:flex; align-items:center; gap:6px; margin-top:2px; flex-wrap:wrap; }
+
+    /* Pills */
+    .pill { font-size:9.5px; font-weight:700; letter-spacing:.5px; padding:3px 8px; border-radius:10px; text-transform:uppercase; white-space:nowrap; }
+    .pill.ok  { background:var(--green-bg); color:var(--green); }
+    .pill.no  { background:var(--red-bg); color:var(--red-txt); }
+    .pill.neu { background:#2c3338; color:#b5c3cb; }
+
+    /* Reglas con check */
+    .rules { border-top:1px solid var(--line); }
+    .rl { display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:1px solid #262828; }
+    .rl:last-child { border-bottom:none; }
+    .rl-l { flex:1; font-size:12.5px; color:var(--txt-sub); line-height:1.3; transition:color .25s; }
+    .rl.done .rl-l { color:var(--txt); }
+    .rl-v { font-size:11px; font-weight:600; color:var(--txt); background:var(--card-2); padding:3px 8px; border-radius:10px; white-space:nowrap; opacity:0; transform:translateX(4px); transition:opacity .25s, transform .25s; }
+    .rl.done .rl-v { opacity:1; transform:none; }
+    .ck { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ck .ic { width:12px; height:12px; stroke-width:3.2; }
+    .ck.spin { border:2px solid #383b3b; border-top-color:var(--green); animation:spin .75s linear infinite; }
+    .ck.ok { background:var(--green); color:#0d2216; animation:pop .32s cubic-bezier(.3,1.6,.5,1); }
+    .ck.no { background:var(--red-bg); color:var(--red-txt); }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    @keyframes pop { 0%{transform:scale(.3)} 100%{transform:scale(1)} }
+
+    /* Veredicto */
+    .verdict { display:flex; align-items:center; gap:10px; margin:2px 12px 12px; padding:10px 12px; border-radius:8px; background:var(--green-bg); border:1px solid var(--green-bd); animation:fadeUp .3s ease; }
+    .verdict-ico { width:32px; height:32px; border-radius:50%; background:var(--green); color:#0d2216; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .verdict-ico .ic { width:17px; height:17px; stroke-width:2.4; }
+    .verdict-t { font-size:14px; font-weight:800; color:var(--green); letter-spacing:.8px; line-height:1.2; }
+    .verdict-s { font-size:11px; color:var(--txt-sub); line-height:1.3; }
+
+    /* Opciones tipo lista */
+    .opts { border-top:1px solid var(--line); }
+    .opt { display:flex; align-items:center; gap:11px; padding:10px 12px; border-bottom:1px solid #262828; cursor:pointer; transition:background .12s; }
+    .opt:last-child { border-bottom:none; }
+    .opt:active { background:#262929; }
+    .opt-ico { width:34px; height:34px; border-radius:9px; background:var(--card-2); color:var(--txt-sub); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .2s; }
+    .opt-tx { flex:1; min-width:0; }
+    .opt-t { font-size:13.5px; color:var(--txt); font-weight:500; line-height:1.25; }
+    .opt-d { font-size:11px; color:var(--txt-dim); line-height:1.3; margin-top:1px; }
+    .radio { width:19px; height:19px; border-radius:50%; border:2px solid #5d6266; flex-shrink:0; transition:all .2s; }
+    .opt.sel { background:rgba(33,192,99,.06); }
+    .opt.sel .opt-ico { background:var(--green-bg); color:var(--green); }
+    .opt.sel .radio { border-color:var(--green); background:var(--green); box-shadow:inset 0 0 0 3px var(--card); }
+    .opt-arrow { color:var(--txt-dim); }
+    .opt-arrow .ic { width:16px; height:16px; }
+    .opt.dis { cursor:default; }
+    .opt.dis .opt-ico { color:#5f6b72; }
+    .opt.dis .opt-t { color:var(--txt-dim); }
+    .opt.sel .opt-arrow { color:var(--green); }
+
+    .summary-bar { display:flex; gap:12px; padding:8px 12px; border-top:1px solid var(--line); font-size:11px; color:var(--txt-dim); }
+    .summary-bar b { color:var(--green); font-weight:700; }
+
+    /* Formulario */
+    .form { padding:12px; border-top:1px solid var(--line); }
+    .fld-l { display:block; font-size:11px; color:var(--txt-sub); margin-bottom:5px; font-weight:500; }
+    .fld { display:flex; align-items:center; background:var(--card-2); border:1px solid #3a3d3d; border-radius:8px; margin-bottom:11px; transition:border-color .15s, box-shadow .15s; }
+    .fld:focus-within { border-color:var(--green); box-shadow:0 0 0 3px rgba(33,192,99,.15); }
+    .fld-a { padding:0 0 0 11px; color:var(--txt-dim); font-size:13px; font-weight:600; display:flex; align-items:center; }
+    .fld-a.suf { padding:0 11px 0 0; font-weight:500; }
+    .fld-a .ic { width:16px; height:16px; }
+    .fld input, .fld select { flex:1; min-width:0; background:transparent; border:none; outline:none; color:var(--txt); font-size:14.5px; padding:10px 11px; font-family:var(--font); -webkit-appearance:none; appearance:none; }
+    .fld select option { background:#1d1f1f; }
+    .fld input::placeholder { color:#5f6b72; }
+    .fld input::-webkit-outer-spin-button, .fld input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+    .fld input[type=number] { -moz-appearance:textfield; }
+    .fld-err { font-size:11px; color:var(--red-txt); margin:-6px 0 10px; display:none; align-items:center; gap:5px; }
+    .fld-err.show { display:flex; }
+    .fld-err .ic { width:12px; height:12px; }
+    .btn-p { width:100%; display:flex; align-items:center; justify-content:center; gap:7px; background:var(--green); color:#0d2216; border:none; border-radius:8px; padding:11px; font-size:13.5px; font-weight:700; cursor:pointer; font-family:var(--font); transition:background .15s; }
+    .btn-p:active { background:var(--green-dk); }
+    .btn-p .ic { width:16px; height:16px; stroke-width:2.4; }
+
+    /* Botones de respuesta rápida (estilo WhatsApp) */
+    .bub-btns { border-top:1px solid #3a3c3c; margin:8px -8px -8px; display:flex; }
+    .bb-btn { flex:1; background:none; border:none; color:var(--green); font-size:13.5px; font-weight:500; padding:11px 6px; cursor:pointer; font-family:var(--font); display:flex; align-items:center; justify-content:center; gap:6px; }
+    .bb-btn .ic { width:16px; height:16px; }
+    .bb-btn:not(:last-child) { border-right:1px solid #3a3c3c; }
+    .bb-btn:active { background:rgba(255,255,255,.05); }
+    .bb-btn:first-child { border-bottom-left-radius:7.5px; }
+    .bb-btn:last-child  { border-bottom-right-radius:7.5px; }
+
+    /* Módulos (ayuda) */
+    .mod { display:flex; align-items:center; gap:11px; padding:9px 12px; border-top:1px solid #262828; }
+    .mod-n { width:22px; height:22px; border-radius:50%; background:var(--card-2); color:var(--txt-sub); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .mod-t { font-size:13px; color:var(--txt); font-weight:600; }
+    .mod-d { font-size:11px; color:var(--txt-dim); }
+
+    /* Explain */
+    .sgrid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border-top:1px solid var(--line); }
+    .sg { background:var(--card); padding:8px 12px; }
+    .sg-l { font-size:9.5px; letter-spacing:.6px; text-transform:uppercase; color:var(--txt-dim); }
+    .sg-v { font-size:12.5px; color:var(--txt); font-weight:600; margin-top:2px; line-height:1.3; }
+    .sec { padding:12px; border-top:1px solid var(--line); }
+    .sec-t { display:flex; align-items:center; gap:6px; font-size:10px; font-weight:600; letter-spacing:.7px; text-transform:uppercase; color:var(--txt-sub); margin-bottom:9px; }
+    .sec-t .ic { width:13px; height:13px; color:var(--green); }
+    .seg { display:flex; align-items:center; gap:11px; }
+    .seg-badge { min-width:46px; height:46px; padding:0 8px; border-radius:11px; background:var(--green-bg); border:1px solid var(--green-bd); color:var(--green); font-size:19px; font-weight:800; display:flex; align-items:center; justify-content:center; letter-spacing:.5px; }
+    .seg-t { font-size:13px; color:var(--txt); font-weight:600; }
+    .seg-d { font-size:11px; color:var(--txt-dim); line-height:1.35; }
+    .tbl-cap { font-size:11px; color:var(--txt-sub); margin-bottom:7px; line-height:1.35; }
+    .tbl { border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+    .tbl table { width:100%; border-collapse:collapse; font-size:10.5px; table-layout:fixed; }
+    .tbl th, .tbl td { padding:7px 2px; text-align:center; color:var(--txt-sub); border-bottom:1px solid #262828; }
+    .tbl tr:last-child td { border-bottom:none; }
+    .tbl th { background:#232525; color:var(--txt); font-weight:700; font-size:10.5px; }
+    .tbl th:first-child, .tbl td:first-child { text-align:left; padding-left:9px; width:36%; color:var(--txt-sub); font-weight:500; }
+    .tbl th:first-child { color:var(--txt-dim); font-weight:600; font-size:9.5px; text-transform:uppercase; letter-spacing:.4px; }
+    .tbl td.hl { background:var(--green-bg); color:var(--green); font-weight:700; }
+    .tbl th.hl { background:var(--green); color:#0d2216; }
+    .tbl-note { display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--txt-dim); margin-top:7px; }
+    .tbl-note .ic { width:12px; height:12px; color:var(--green); }
+    .lvl { display:inline-flex; align-items:center; gap:7px; padding:6px 12px 6px 8px; border-radius:16px; background:var(--green-bg); border:1px solid var(--green-bd); color:var(--green); font-weight:700; font-size:12.5px; }
+    .lvl .ic { width:15px; height:15px; }
+    .cond { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #262828; }
+    .cond:first-of-type { padding-top:0; }
+    .cond:last-child { border-bottom:none; padding-bottom:0; }
+    .cond-ico { width:30px; height:30px; border-radius:8px; background:var(--card-2); color:var(--txt-sub); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cond-ico .ic { width:15px; height:15px; }
+    .cond-l { flex:1; font-size:12px; color:var(--txt-sub); }
+    .cond-v { font-size:12.5px; color:var(--txt); font-weight:600; text-align:right; }
+    .cond-v.yes { color:var(--green); }
+
+    /* Bloqueo tras responder */
+    .msg-row.locked .opt, .msg-row.locked .bb-btn, .msg-row.locked .btn-p { pointer-events:none; }
+    .msg-row.locked .bb-btn, .msg-row.locked .btn-p { opacity:.38; }
+    .msg-row.locked .opt:not(.sel) { opacity:.42; }
+    .msg-row.locked .fld { opacity:.65; }
+
+    /* ══ INPUT BAR ══ */
+    .input-bar { background:var(--bg-panel); min-height:58px; padding:8px 8px; display:flex; align-items:center; gap:6px; flex-shrink:0; z-index:10; border-top:1px solid #2a2b2b; }
+    .ib-box { flex:1; display:flex; align-items:center; background:var(--bg-hover); border-radius:22px; padding:0 4px; min-height:42px; }
     .ib-box .icon-btn { width:34px; height:34px; color:var(--txt-dim); }
+    .ib-box .icon-btn .ic { width:20px; height:20px; }
     .ib-input { flex:1; min-width:0; background:transparent; border:none; padding:9px 4px; color:var(--txt); font-size:15px; font-family:var(--font); outline:none; }
     .ib-input::placeholder { color:var(--txt-dim); }
-    .ib-send { width:46px; height:46px; border-radius:50%; background:var(--green); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#0d2216; }
+    .ib-send { width:44px; height:44px; border-radius:50%; background:var(--green); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#0d2216; transition:background .15s; }
     .ib-send:active { background:var(--green-dk); }
+    .ib-send .ic { width:20px; height:20px; stroke-width:2.2; }
+
     .home-indicator { height:20px; background:var(--bg-panel); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .home-bar { width:120px; height:4px; background:#464747; border-radius:2px; }
-
-    /* Hoja de lista (List message) */
-    .overlay { position:absolute; inset:0; background:rgba(0,0,0,.55); z-index:50; display:flex; flex-direction:column; justify-content:flex-end; animation:fade .18s ease; }
-    @keyframes fade { from{opacity:0} to{opacity:1} }
-    @keyframes up { from{transform:translateY(100%)} to{transform:none} }
-    .sheet { background:#1d1f1f; border-radius:18px 18px 0 0; max-height:82%; display:flex; flex-direction:column; animation:up .25s cubic-bezier(.2,.8,.2,1); }
-    .grab { width:36px; height:4px; background:#4a4c4c; border-radius:2px; margin:8px auto 0; }
-    .sheet-hd { display:flex; align-items:center; padding:8px 8px 10px; }
-    .sheet-t { flex:1; text-align:center; font-size:16px; font-weight:600; color:var(--txt); margin-right:38px; }
-    .sheet-body { overflow-y:auto; padding-bottom:6px; }
-    .sec-h { color:var(--txt-dim); font-size:13.5px; padding:10px 22px 6px; }
-    .row { display:flex; align-items:center; gap:14px; padding:11px 22px; cursor:pointer; }
-    .row:active { background:#262828; }
-    .row-tx { flex:1; min-width:0; }
-    .row-t { font-size:15.5px; color:var(--txt); line-height:1.3; }
-    .row-d { font-size:13px; color:var(--txt-dim); line-height:1.35; margin-top:1px; }
-    .radio { width:21px; height:21px; border-radius:50%; border:2px solid #8696a0; flex-shrink:0; transition:all .15s; }
-    .row.sel .radio { border-color:var(--green); background:var(--green); box-shadow:inset 0 0 0 4px #1d1f1f; }
-    .sheet-ft { display:flex; justify-content:flex-end; padding:8px 18px 18px; }
-    .fab { width:54px; height:54px; border-radius:50%; background:var(--green); border:none; color:#0d2216; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:opacity .15s; }
-    .fab:disabled { opacity:.35; cursor:default; }
-
-    /* Pantalla de formulario (WhatsApp Flow) */
-    .flow { position:absolute; inset:28px 0 0 0; z-index:60; background:var(--bg-chat); display:flex; flex-direction:column; animation:up .28s cubic-bezier(.2,.8,.2,1); }
-    .flow-top { height:56px; display:flex; align-items:center; gap:6px; padding:0 6px; border-bottom:1px solid #2a2b2b; background:var(--bg-panel); flex-shrink:0; }
-    .flow-title { flex:1; font-size:17px; font-weight:600; color:var(--txt); }
-    .flow-body { flex:1; overflow-y:auto; padding:22px 18px; }
-    .f-h { font-size:21px; font-weight:700; color:var(--txt); margin-bottom:6px; line-height:1.25; }
-    .f-p { font-size:14.5px; color:var(--txt-sub); margin-bottom:26px; line-height:1.45; }
-    .f-in { position:relative; margin-bottom:22px; }
-    .f-in input { width:100%; background:transparent; border:1px solid #5d6266; border-radius:8px; padding:15px 14px; color:var(--txt); font-size:16px; outline:none; font-family:var(--font); -webkit-appearance:none; }
-    .f-in input::-webkit-outer-spin-button, .f-in input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
-    .f-in input[type=number] { -moz-appearance:textfield; }
-    .f-in label { position:absolute; left:10px; top:-8px; background:var(--bg-chat); padding:0 5px; font-size:12px; color:var(--txt-sub); }
-    .f-in input:focus { border-color:var(--green); border-width:2px; padding:14px 13px; }
-    .f-in input:focus + label { color:var(--green); }
-    .f-help { font-size:12px; color:var(--txt-dim); margin:6px 4px 0; }
-    .f-in.err input { border-color:var(--err); }
-    .f-in.err label, .f-in.err .f-help { color:var(--err); }
-    .flow-ft { padding:12px 16px 16px; border-top:1px solid #2a2b2b; flex-shrink:0; }
-    .f-btn { width:100%; background:var(--green); color:#0d2216; border:none; border-radius:24px; padding:13px; font-size:15px; font-weight:600; font-family:var(--font); cursor:pointer; }
-    .f-btn:active { background:var(--green-dk); }
-    .f-mg { text-align:center; font-size:12px; color:var(--txt-dim); margin-top:10px; }
-    .f-mg span { color:var(--green); }
-
-    /* Visor de imagen */
-    .lightbox { position:absolute; inset:0; z-index:70; background:#000; display:flex; flex-direction:column; animation:fade .15s; }
-    .lb-top { height:56px; display:flex; align-items:center; padding:0 6px; color:var(--txt); }
-    .lb-img { flex:1; display:flex; align-items:center; justify-content:center; padding:10px; }
-    .lb-img img { max-width:100%; max-height:100%; }
   </style>
 </head>
 <body>
 
-<div class="phone-wrap" id="phone">
+<div class="phone-wrap">
 
+  <!-- STATUS BAR -->
   <div class="status-bar">
     <span class="sb-time-os" id="os-time">9:41</span>
     <div class="sb-icons-os">
@@ -183,24 +288,34 @@
     </div>
   </div>
 
+  <!-- CHAT HEADER -->
   <div class="chat-header">
     <button class="ch-back" aria-label="Volver"><svg class="ic" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
     <div class="ch-av"><img src="Logo.png" alt="ORION"></div>
     <div class="ch-info">
-      <div class="ch-name">ORION Agente</div>
-      <div class="ch-status" id="ch-status">en línea</div>
+      <div class="ch-name">ORION Agente
+        <svg class="ic verified" viewBox="0 0 24 24"><path d="M12 1.5l2.6 1.9 3.2-.1 1 3.1 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3.1-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3.1-2.6-1.9 1-3.1-1-3.1 2.6-1.9 1-3.1 3.2.1z"/><path d="m8.5 12 2.4 2.4 4.6-4.8"/></svg>
+      </div>
+      <div class="ch-status" id="ch-status"><span class="live-dot"></span> en línea</div>
     </div>
-    <button class="icon-btn" aria-label="Llamar"><svg class="ic" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></button>
-    <button class="icon-btn" aria-label="Más"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+    <div class="ch-icons">
+      <button class="icon-btn" aria-label="Llamar"><svg class="ic" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></button>
+      <button class="icon-btn" aria-label="Más"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+    </div>
   </div>
 
   <div class="chat-bg"></div>
 
+  <!-- MENSAJES -->
   <div class="messages" id="messages">
     <div class="date-div"><span>Hoy</span></div>
-    <div class="sys-note"><span>Esta cuenta de empresa usa un servicio seguro de Meta para gestionar este chat.</span></div>
+    <div class="sys-note"><span>
+      <svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Canal interno de Caja Trujillo. La información del cliente es confidencial.
+    </span></div>
   </div>
 
+  <!-- INPUT BAR -->
   <div class="input-bar">
     <div class="ib-box">
       <button class="icon-btn" aria-label="Emoji"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></button>
@@ -214,634 +329,603 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════════
-//  LÍMITES OFICIALES DE WHATSAPP (Cloud API)
-//  Cada mensaje se valida contra estos valores antes de mostrarse.
-//  Si algo se pasa, aparece un aviso en la consola del navegador.
-// ═══════════════════════════════════════════════════════════════════════════
-const LIMITS = {
-  text:        4096,  // mensaje de texto
-  header:      60,    // header de texto en mensajes interactivos
-  footer:      60,
-  btnBody:     1024,  // body de mensaje con botones
-  btnCount:    3,     // máximo de botones de respuesta
-  btnTitle:    20,
-  listBody:    4096,
-  listButton:  20,
-  listRows:    10,    // total de filas en todas las secciones
-  rowTitle:    24,
-  rowDesc:     72,
-  sectionTitle:24,
-  flowCta:     20,
-  flowLabel:   20,    // label de TextInput en Flows
-  flowHelper:  80,
-  flowFooter:  35,
-  caption:     1024,
-};
-const WARN = [];
-function check(cond, msg) { if (!cond) { WARN.push(msg); console.warn('[Límite WhatsApp] ' + msg); } }
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  CONFIGURACIÓN DEL DEMO
-// ═══════════════════════════════════════════════════════════════════════════
-const CFG = {
-  clients: {
-    '12345678': { name: 'Carlos Mendoza',  status: 'Recurrente' },
-    '87654321': { name: 'Ana Ríos Torres', status: 'Nuevo' },
-  },
-  segmento: 'AA',
-  checkRules: [
-    ['Segmento',                                   () => `*${CFG.segmento}*`],
-    ['Lista negativa',                             () => 'No registra'],
-    ['Calificación RCC actual',                    () => 'Normal'],
-    ['Deficiente, Dudoso y Pérdida (últ. 6 m)',    () => 'Sin registros'],
-    ['Castigado, judicial o venta (últ. 24 m)',    () => 'Sin registros'],
-  ],
-  fuentes:  ['Dependiente', 'Independiente', 'Negocio propio'],
-  destinos: ['Activo fijo', 'Capital de trabajo', 'Consumo'],
-  products: [
-    { id: 'disfruta', t: 'Disfruta +',        d: 'Crédito de consumo',              ok: false },
-    { id: 'emprende', t: 'Emprende +',        d: 'Crédito emprendedor',             ok: false },
-    { id: 'micro',    t: 'Microemprendedor',  d: 'Pequeña empresa · capital de trabajo', ok: true },
-    { id: 'negocios', t: '+ Negocios',        d: 'Crédito empresarial',             ok: true },
-    { id: 'crediagil',t: 'Campaña Crediagil', d: 'Campaña vigente',                 ok: true },
-    { id: 'navidena', t: 'Campaña Navideña',  d: 'Campaña de temporada',            ok: true },
-  ],
-  verify: { entidades: '2', calificacion: 'Normal', saldoPagado: '60%' },
-  ratio: {
-    cols: ['AAA', 'AA', 'A', 'B', 'C'],
-    rows: [
-      ['Hasta S/ 2,000',       ['≤ 80%', '≤ 80%', '≤ 70%', '≤ 60%', '≤ 60%']],
-      ['S/ 2,000 – 10,000',    ['≤ 85%', '≤ 85%', '≤ 80%', '≤ 70%', '≤ 65%']],
-      ['Más de S/ 10,000',     ['≤ 90%', '≤ 90%', '≤ 80%', '≤ 75%', '≤ 70%']],
-    ],
-  },
-  explain: [
-    ['🛡️', 'Nivel de aprobación',   '*Líder*'],
-    ['📄', 'Documento del negocio', 'Declaración jurada'],
-    ['🏛️', 'Garantía',              'Patrimonio personal'],
-    ['📈', 'TEA mínima',            '*45%*'],
-    ['⚠️', 'Excepciones',           'No aplica'],
-    ['👥', 'Requiere cónyuge',      '*Sí*'],
-  ],
-};
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  UTILIDADES
-// ═══════════════════════════════════════════════════════════════════════════
-const $box    = document.getElementById('messages');
-const $status = document.getElementById('ch-status');
-const $phone  = document.getElementById('phone');
-const sleep   = ms => new Promise(r => setTimeout(r, ms));
-const hhmm    = () => new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-const fmtN    = n => Number(n).toLocaleString('es-PE');
-const scroll  = () => { $box.scrollTop = $box.scrollHeight; };
-const esc     = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-(function clock(){ document.getElementById('os-time').textContent = hhmm(); setTimeout(clock, 10000); })();
-
-// Formato nativo de WhatsApp: *negrita*, _cursiva_, ~tachado~, `código`
-function wa(text) {
-  return esc(text)
-    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
-    .replace(/\*([^*\n]+)\*/g, '<b>$1</b>')
-    .replace(/(^|[\s(])_([^_\n]+)_(?=$|[\s).,:;!?])/gm, '$1<i>$2</i>')
-    .replace(/~([^~\n]+)~/g, '<s>$1</s>')
-    .replace(/\n/g, '<br>');
-}
-const plain = s => String(s).replace(/[*_~`]/g, '');
-
-const TICKS = `<svg viewBox="0 0 16 11"><path fill="#53bdeb" d="M11.07.65a.75.75 0 0 1 .03 1.06l-6 6.5a.75.75 0 0 1-1.1 0L1.45 5.47a.75.75 0 1 1 1.1-1.02l2 2.15 5.46-5.92a.75.75 0 0 1 1.06-.03zm3.5 0a.75.75 0 0 1 .03 1.06l-6 6.5a.75.75 0 0 1-1.07.03l-.5-.47a.75.75 0 1 1 1.03-1.09l-.05.04 5.5-5.97a.75.75 0 0 1 1.06-.1z"/></svg>`;
-const meta = dir => `<span class="msg-meta"><span class="msg-time">${hhmm()}</span>${dir === 'out' ? `<span class="ticks">${TICKS}</span>` : ''}</span>`;
-const SVG = {
-  reply: '<svg class="ic" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>',
-  list:  '<svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>',
-  form:  '<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>',
-  close: '<svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>',
-  send:  '<svg class="ic" viewBox="0 0 24 24" style="width:22px;height:22px"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>',
-  dots:  '<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>',
-};
-
-function row(dir, cls, inner) {
-  const r = document.createElement('div');
-  r.className = `msg-row ${dir}`;
-  r.innerHTML = `<div class="bubble ${cls}">${inner}</div>`;
-  $box.appendChild(r); scroll();
-  return r;
-}
-
-async function typing(ms = 1100) {
-  const r = document.createElement('div');
-  r.className = 'typing-row';
-  r.innerHTML = `<div class="typing-bub"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>`;
-  $box.appendChild(r); scroll();
-  $status.textContent = 'escribiendo…';
-  await sleep(ms);
-  r.remove();
-  $status.textContent = 'en línea';
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  TIPOS DE MENSAJE DE WHATSAPP
-// ═══════════════════════════════════════════════════════════════════════════
-let seq = 0, active = null;
-const REG = {};
-
-const WA = {
-  // Mensaje de texto
-  text(body) {
-    check(body.length <= LIMITS.text, `Texto supera ${LIMITS.text} caracteres`);
-    row('in', '', `<div class="b-pad b-text">${wa(body)}${meta('in')}</div>`);
-  },
-
-  // Imagen con pie
-  image(src, caption) {
-    check(!caption || caption.length <= LIMITS.caption, 'Caption de imagen muy largo');
-    const r = row('in', 'img', `<img src="${src}" alt="">${caption ? `<div class="img-cap b-text">${wa(caption)}${meta('in')}</div>` : ''}`);
-    r.querySelector('img').onclick = () => openLightbox(src);
-  },
-
-  // Botones de respuesta (máx. 3)
-  buttons({ header, body, footer, buttons }, onReply) {
-    check(buttons.length <= LIMITS.btnCount, `Más de ${LIMITS.btnCount} botones`);
-    buttons.forEach(b => check(b.title.length <= LIMITS.btnTitle, `Botón "${b.title}" supera ${LIMITS.btnTitle} caracteres`));
-    check(body.length <= LIMITS.btnBody, 'Body de botones supera 1024');
-    check(!header || header.length <= LIMITS.header, `Header "${header}" supera 60`);
-    check(!footer || footer.length <= LIMITS.footer, `Footer "${footer}" supera 60`);
-    const id = 'm' + (++seq);
-    REG[id] = { header, body, onReply, buttons };
-    active = id;
-    row('in', 'ia', `
-      <div class="b-pad b-text">
-        ${header ? `<div class="ia-hd">${esc(header)}</div>` : ''}
-        <div>${wa(body)}</div>
-        ${footer ? `<div class="ia-ft">${esc(footer)}</div>` : ''}
-        ${meta('in')}
-      </div>
-      ${buttons.map(b => `<button class="ia-btn" onclick="tapButton('${id}','${b.id}')">${SVG.reply}${esc(b.title)}</button>`).join('')}
-    `);
-    return id;
-  },
-
-  // Mensaje de lista (un botón que abre las opciones)
-  list({ header, body, footer, button, sections }, onReply) {
-    const total = sections.reduce((n, s) => n + s.rows.length, 0);
-    check(total <= LIMITS.listRows, `Lista con ${total} filas (máx. 10)`);
-    check(button.length <= LIMITS.listButton, `Botón de lista "${button}" supera 20`);
-    check(body.length <= LIMITS.listBody, 'Body de lista muy largo');
-    check(!header || header.length <= LIMITS.header, 'Header de lista supera 60');
-    check(!footer || footer.length <= LIMITS.footer, 'Footer de lista supera 60');
-    sections.forEach(s => {
-      check(!s.title || s.title.length <= LIMITS.sectionTitle, `Sección "${s.title}" supera 24`);
-      s.rows.forEach(r => {
-        check(r.title.length <= LIMITS.rowTitle, `Fila "${r.title}" supera 24`);
-        check(!r.description || r.description.length <= LIMITS.rowDesc, `Descripción de "${r.title}" supera 72`);
-      });
-    });
-    const id = 'm' + (++seq);
-    REG[id] = { header, body, onReply, sections, button };
-    active = id;
-    row('in', 'ia', `
-      <div class="b-pad b-text">
-        ${header ? `<div class="ia-hd">${esc(header)}</div>` : ''}
-        <div>${wa(body)}</div>
-        ${footer ? `<div class="ia-ft">${esc(footer)}</div>` : ''}
-        ${meta('in')}
-      </div>
-      <button class="ia-btn" onclick="openList('${id}')">${SVG.list}${esc(button)}</button>
-    `);
-    return id;
-  },
-
-  // WhatsApp Flow (formulario nativo a pantalla completa)
-  flow({ header, body, footer, cta, screen }, onSubmit) {
-    check(cta.length <= LIMITS.flowCta, `CTA "${cta}" supera 20`);
-    check(screen.footer.length <= LIMITS.flowFooter, 'Botón del Flow supera 35');
-    screen.inputs.forEach(i => {
-      check(i.label.length <= LIMITS.flowLabel, `Label "${i.label}" supera 20`);
-      check(!i.helper || i.helper.length <= LIMITS.flowHelper, `Helper de "${i.label}" supera 80`);
-    });
-    const id = 'm' + (++seq);
-    REG[id] = { header, body, onReply: onSubmit, screen };
-    active = id;
-    row('in', 'ia', `
-      <div class="b-pad b-text">
-        ${header ? `<div class="ia-hd">${esc(header)}</div>` : ''}
-        <div>${wa(body)}</div>
-        ${footer ? `<div class="ia-ft">${esc(footer)}</div>` : ''}
-        ${meta('in')}
-      </div>
-      <button class="ia-btn" onclick="openFlow('${id}')">${SVG.form}${esc(cta)}</button>
-    `);
-    return id;
-  },
-};
-
-// Respuesta del asesor (con cita al mensaje respondido, como en WhatsApp)
-function outReply(mid, text) {
-  const m = REG[mid];
-  const q = m ? (m.header || plain(m.body).split('\n')[0]) : '';
-  row('out', q ? 'has-quote' : '', `
-    ${q ? `<div class="quote"><div class="quote-n">ORION Agente</div><div class="quote-t">${esc(q)}</div></div>` : ''}
-    <div class="b-pad b-text" style="padding-top:${q ? 0 : 6}px">${wa(text)}${meta('out')}</div>
-  `);
-}
-function outText(text) {
-  row('out', '', `<div class="b-pad b-text">${wa(text)}${meta('out')}</div>`);
-}
-
-// En WhatsApp los botones antiguos siguen visibles: el bot debe ignorarlos
-async function stale(mid, label) {
-  outReply(mid, label);
-  await typing(700);
-  WA.text('Esa opción corresponde a un paso anterior. Continúa desde el último mensaje 👇');
-}
-
-async function tapButton(mid, bid) {
-  const m = REG[mid];
-  const b = m.buttons.find(x => x.id === bid);
-  if (mid !== active) return stale(mid, b.title);
-  active = null;
-  outReply(mid, b.title);
-  m.onReply(bid);
-}
-
-// ── Hoja de lista ──────────────────────────────────────────────────────────
-function openList(mid) {
-  const m = REG[mid];
-  let selected = null;
-  const ov = document.createElement('div');
-  ov.className = 'overlay';
-  ov.innerHTML = `
-    <div class="sheet">
-      <div class="grab"></div>
-      <div class="sheet-hd">
-        <button class="icon-btn js-x">${SVG.close}</button>
-        <div class="sheet-t">${esc(m.button)}</div>
-      </div>
-      <div class="sheet-body">
-        ${m.sections.map(s => `
-          ${s.title ? `<div class="sec-h">${esc(s.title)}</div>` : ''}
-          ${s.rows.map(r => `
-            <div class="row" data-id="${r.id}">
-              <div class="row-tx"><div class="row-t">${esc(r.title)}</div>${r.description ? `<div class="row-d">${esc(r.description)}</div>` : ''}</div>
-              <span class="radio"></span>
-            </div>`).join('')}
-        `).join('')}
-      </div>
-      <div class="sheet-ft"><button class="fab js-send" disabled>${SVG.send}</button></div>
-    </div>`;
-  $phone.appendChild(ov);
-  const close = () => ov.remove();
-  ov.addEventListener('click', e => { if (e.target === ov) close(); });
-  ov.querySelector('.js-x').onclick = close;
-  ov.querySelectorAll('.row').forEach(r => r.onclick = () => {
-    ov.querySelectorAll('.row').forEach(x => x.classList.remove('sel'));
-    r.classList.add('sel');
-    selected = r.dataset.id;
-    ov.querySelector('.js-send').disabled = false;
-  });
-  ov.querySelector('.js-send').onclick = () => {
-    const rowData = m.sections.flatMap(s => s.rows).find(r => r.id === selected);
-    close();
-    if (mid !== active) return stale(mid, rowData.title);
-    active = null;
-    outReply(mid, rowData.title);
-    m.onReply(selected);
+  // ════════════════════════════════════════════════════════════════════════
+  //  ÍCONOS (trazo lineal, estilo consistente)
+  // ════════════════════════════════════════════════════════════════════════
+  const ICONS = {
+    check:    '<path d="M20 6 9 17l-5-5"/>',
+    x:        '<path d="M18 6 6 18M6 6l12 12"/>',
+    chev:     '<path d="m9 18 6-6-6-6"/>',
+    arrow:    '<path d="M5 12h14M13 5l7 7-7 7"/>',
+    search:   '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+    help:     '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/>',
+    user:     '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    users:    '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+    id:       '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.2"/><path d="M14 10h4M14 14h4"/>',
+    shield:   '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+    building: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>',
+    briefcase:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    store:    '<path d="M3 9 4.5 4h15L21 9M4 9v11h16V9M3 9h18M10 20v-5h4v5"/>',
+    box:      '<path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/>',
+    trend:    '<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>',
+    cart:     '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 2h2.5l2.7 12.4a2 2 0 0 0 2 1.6h9.6a2 2 0 0 0 2-1.6L22 7H5.1"/>',
+    coins:    '<circle cx="8" cy="8" r="6"/><path d="M18.1 10.4A6 6 0 1 1 10.3 18M7 6h1v4M16.7 13.9l.7.7-2.8 2.8"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    file:     '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>',
+    landmark: '<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l9 5H3z"/>',
+    percent:  '<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+    alert:    '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+    award:    '<circle cx="12" cy="8" r="6"/><path d="M15.5 12.9 17 22l-5-3-5 3 1.5-9.1"/>',
+    layers:   '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+    refresh:  '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+    zap:      '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+    gift:     '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C9 3 12 8 12 8s3-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
+    target:   '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+    grid:     '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',
+    clipboard:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 14l2 2 4-4"/>',
+    flag:     '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+    info:     '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+    send:     '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
   };
-}
+  const ic = (n, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24">${ICONS[n] || ''}</svg>`;
 
-// ── Pantalla del Flow ──────────────────────────────────────────────────────
-function openFlow(mid) {
-  const m = REG[mid];
-  const s = m.screen;
-  const fl = document.createElement('div');
-  fl.className = 'flow';
-  fl.innerHTML = `
-    <div class="flow-top">
-      <button class="icon-btn js-x">${SVG.close}</button>
-      <div class="flow-title">${esc(s.title)}</div>
-      <button class="icon-btn">${SVG.dots}</button>
-    </div>
-    <div class="flow-body">
-      ${s.heading ? `<div class="f-h">${esc(s.heading)}</div>` : ''}
-      ${s.text ? `<div class="f-p">${esc(s.text)}</div>` : ''}
-      ${s.inputs.map(i => `
-        <div class="f-in" data-name="${i.name}">
-          <input type="${i.type || 'text'}" inputmode="${i.type === 'number' ? 'decimal' : 'text'}">
-          <label>${esc(i.label)}${i.required ? '' : ' (opcional)'}</label>
-          ${i.helper ? `<div class="f-help" data-h="${esc(i.helper)}">${esc(i.helper)}</div>` : ''}
-        </div>`).join('')}
-    </div>
-    <div class="flow-ft">
-      <button class="f-btn js-ok">${esc(s.footer)}</button>
-      <div class="f-mg">Gestionado por Caja Trujillo. <span>Más información</span></div>
-    </div>`;
-  $phone.appendChild(fl);
-  const first = fl.querySelector('input'); if (first) setTimeout(() => first.focus(), 300);
-  fl.querySelector('.js-x').onclick = () => fl.remove();
-  fl.querySelectorAll('.f-in input').forEach(inp => inp.oninput = () => {
-    const w = inp.closest('.f-in'); w.classList.remove('err');
-    const h = w.querySelector('.f-help'); if (h) h.textContent = h.dataset.h;
-  });
-  fl.querySelector('.js-ok').onclick = () => {
-    const data = {}; let ok = true;
-    s.inputs.forEach(i => {
-      const w = fl.querySelector(`.f-in[data-name="${i.name}"]`);
-      const v = w.querySelector('input').value.trim();
-      const bad = i.required && (v === '' || (i.type === 'number' && !(parseFloat(v) >= (i.min ?? 0))));
-      if (bad) {
-        ok = false; w.classList.add('err');
-        const h = w.querySelector('.f-help'); if (h) h.textContent = 'Campo obligatorio';
-      }
-      data[i.name] = v;
-    });
-    if (!ok) return;
-    fl.remove();
-    if (mid !== active) return stale(mid, 'Formulario enviado');
-    active = null;
-    m.onReply(data);
-  };
-}
-
-// ── Visor de imagen ────────────────────────────────────────────────────────
-function openLightbox(src) {
-  const lb = document.createElement('div');
-  lb.className = 'lightbox';
-  lb.innerHTML = `<div class="lb-top"><button class="icon-btn">${SVG.close}</button></div><div class="lb-img"><img src="${src}"></div>`;
-  lb.onclick = () => lb.remove();
-  $phone.appendChild(lb);
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  IMAGEN DE LA TABLA (en producción la genera el backend y se envía como PNG)
-// ═══════════════════════════════════════════════════════════════════════════
-function rr(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
-}
-function ratioImage(seg) {
-  const W = 1000, P = 48, F = '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-  const headH = 72, rowH = 84, tableY = 196;
-  const H = tableY + headH + rowH * CFG.ratio.rows.length + 110;
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const x = c.getContext('2d');
-  const segIdx = CFG.ratio.cols.indexOf(seg);
-
-  x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, H);
-  x.fillStyle = '#CC0000'; x.fillRect(0, 0, W, 12);
-
-  x.fillStyle = '#CC0000'; x.font = `700 22px ${F}`; x.fillText('LINEAMIENTO POR SEGMENTO', P, 66);
-  x.fillStyle = '#1A1A1A'; x.font = `700 40px ${F}`; x.fillText('Ratio de cuota límite', P, 114);
-  x.fillStyle = '#6B6B6B'; x.font = `400 25px ${F}`; x.fillText('En función al ingreso neto · Pequeña empresa', P, 152);
-
-  // Pill segmento
-  x.font = `700 24px ${F}`;
-  const pt = `Segmento ${seg}`, pw = x.measureText(pt).width + 44;
-  rr(x, W - P - pw, 84, pw, 48, 24); x.fillStyle = '#E8F5EE'; x.fill();
-  x.fillStyle = '#1B7A4A'; x.fillText(pt, W - P - pw + 22, 116);
-
-  // Tabla
-  const tw = W - P * 2, c0 = 330, cw = (tw - c0) / CFG.ratio.cols.length;
-  const th = headH + rowH * CFG.ratio.rows.length;
-  x.save(); rr(x, P, tableY, tw, th, 14); x.clip();
-  x.fillStyle = '#F4F5F6'; x.fillRect(P, tableY, tw, headH);
-  if (segIdx >= 0) {
-    x.fillStyle = '#E8F5EE'; x.fillRect(P + c0 + cw * segIdx, tableY, cw, th);
-    x.fillStyle = '#1B7A4A'; x.fillRect(P + c0 + cw * segIdx, tableY, cw, headH);
-  }
-  x.restore();
-
-  x.strokeStyle = '#E3E5E8'; x.lineWidth = 2;
-  for (let i = 1; i <= CFG.ratio.rows.length; i++) {
-    const yy = tableY + headH + rowH * (i - 1);
-    x.beginPath(); x.moveTo(P, yy); x.lineTo(P + tw, yy); x.stroke();
-  }
-  rr(x, P, tableY, tw, th, 14); x.stroke();
-
-  x.textBaseline = 'middle';
-  x.font = `600 21px ${F}`; x.fillStyle = '#6B6B6B';
-  x.fillText('INGRESO NETO', P + 26, tableY + headH / 2);
-  CFG.ratio.cols.forEach((col, i) => {
-    x.font = `700 26px ${F}`; x.textAlign = 'center';
-    x.fillStyle = i === segIdx ? '#FFFFFF' : '#1A1A1A';
-    x.fillText(col, P + c0 + cw * i + cw / 2, tableY + headH / 2);
-  });
-  CFG.ratio.rows.forEach(([label, vals], r) => {
-    const cy = tableY + headH + rowH * r + rowH / 2;
-    x.textAlign = 'left'; x.font = `500 25px ${F}`; x.fillStyle = '#333333';
-    x.fillText(label, P + 26, cy);
-    vals.forEach((v, i) => {
-      x.textAlign = 'center';
-      x.font = i === segIdx ? `700 27px ${F}` : `400 25px ${F}`;
-      x.fillStyle = i === segIdx ? '#1B7A4A' : '#555555';
-      x.fillText(v, P + c0 + cw * i + cw / 2, cy);
-    });
-  });
-
-  x.textAlign = 'left'; x.textBaseline = 'alphabetic';
-  x.fillStyle = '#1B7A4A'; x.font = `600 21px ${F}`;
-  x.fillText('■', P, H - 44);
-  x.fillStyle = '#7A7A7A'; x.font = `400 21px ${F}`;
-  x.fillText(`Columna aplicable al cliente (segmento ${seg})`, P + 26, H - 44);
-  x.textAlign = 'right'; x.fillStyle = '#9E9E9E';
-  x.fillText('ORION · Caja Trujillo', W - P, H - 44);
-  return c.toDataURL('image/png');
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-//  FLUJO ORION
-// ═══════════════════════════════════════════════════════════════════════════
-let F = {};
-const reset = () => { F = { step: 'idle', dni: '', client: null, fuente: '', destino: '', product: null, amount: 0, years: 0 }; };
-reset();
-
-async function menu(first = false) {
-  reset();
-  await typing(first ? 900 : 700);
-  WA.buttons({
-    header: 'ORION · Caja Trujillo',
-    body: (first ? 'Hola 👋 Soy el *Agente ORION*.\n\n' : '') +
-          'Te ayudo a *precalificar a un cliente* con su documento de identidad y te acompaño hasta la guía operativa.',
-    footer: 'Asistente de evaluación crediticia',
-    buttons: [{ id: 'start', title: 'Iniciar consulta' }, { id: 'help', title: 'Ayuda' }],
-  }, id => id === 'start' ? askDocType() : help());
-}
-
-async function help() {
-  await typing(900);
-  WA.buttons({
-    header: '¿Cómo funciona?',
-    body: 'La evaluación tiene *4 pasos*:\n\n' +
-          '*1. Check* — precalificación por DNI\n' +
-          '*2. Match* — productos aptos según el perfil\n' +
-          '*3. Verify* — condiciones del producto\n' +
-          '*4. Explain* — lineamientos y guía operativa',
-    footer: 'ORION · Caja Trujillo',
-    buttons: [{ id: 'start', title: 'Iniciar consulta' }],
-  }, () => askDocType());
-}
-
-// ── 1-2. Documento ─────────────────────────────────────────────────────────
-async function askDocType() {
-  await typing(800);
-  WA.buttons({
-    header: 'Paso 1 de 4 · Check',
-    body: 'Selecciona el *tipo de documento* del cliente.',
-    footer: 'ORION Check',
-    buttons: [{ id: 'DNI', title: 'DNI' }],
-  }, () => askDni());
-}
-
-async function askDni() {
-  await typing(700);
-  WA.text('Escribe el *número de DNI* del cliente (8 dígitos).');
-  F.step = 'dni';
-}
-
-// ── 3. ORION CHECK ─────────────────────────────────────────────────────────
-async function runCheck(dni) {
-  F.step = 'check';
-  F.dni = dni;
-  F.client = CFG.clients[dni] || { name: `Cliente ${dni}`, status: 'Nuevo' };
-  await typing(1700);
-  WA.text(
-    `*ORION Check* · Precalificación\n\n` +
-    `👤 *${F.client.name}*\n` +
-    `DNI ${dni} · Cliente ${F.client.status.toLowerCase()}\n\n` +
-    CFG.checkRules.map(([l, v]) => `✅ ${l}: ${v()}`).join('\n') +
-    `\n\n🟢 *Resultado: APTO*`
-  );
-  await typing(1000);
-  WA.buttons({
-    header: 'Fuente de ingreso',
-    body: '¿Cuál es la *fuente de ingreso* del cliente?',
-    footer: 'Paso 1 de 4 · Check',
-    buttons: CFG.fuentes.map(f => ({ id: f, title: f })),
-  }, async f => {
-    F.fuente = f;
-    await typing(800);
-    WA.buttons({
-      header: 'Destino del crédito',
-      body: '¿Cuál es el *destino* del crédito?',
-      footer: 'Paso 1 de 4 · Check',
-      buttons: CFG.destinos.map(d => ({ id: d, title: d })),
-    }, d => { F.destino = d; doMatch(); });
-  });
-}
-
-// ── 4. ORION MATCH ─────────────────────────────────────────────────────────
-async function doMatch() {
-  await typing(1500);
-  const ok = CFG.products.filter(p => p.ok);
-  const no = CFG.products.filter(p => !p.ok);
-  WA.list({
-    header: 'Paso 2 de 4 · Match',
-    body: `Productos evaluados para *${F.client.name}*\n_${F.fuente} · ${F.destino}_\n\n` +
-          ok.map(p => `✅ ${p.t}`).join('\n') + '\n' +
-          no.map(p => `❌ ${p.t}`).join('\n') +
-          `\n\nToca *Ver productos* y elige uno apto para continuar.`,
-    footer: `ORION Match · ${ok.length} aptos de ${CFG.products.length}`,
-    button: 'Ver productos',
-    sections: [{ title: 'Productos aptos', rows: ok.map(p => ({ id: p.id, title: p.t, description: p.d })) }],
-  }, id => { F.product = CFG.products.find(p => p.id === id); askData(); });
-}
-
-// ── 5. Datos de la operación (WhatsApp Flow) ───────────────────────────────
-async function askData() {
-  await typing(900);
-  WA.flow({
-    header: 'Paso 3 de 4 · Verify',
-    body: `Producto seleccionado: *${F.product.t}*\n\nCompleta el monto y la antigüedad del negocio para evaluar las condiciones.`,
-    footer: 'ORION Verify',
-    cta: 'Ingresar datos',
-    screen: {
-      title: 'Datos de la operación',
-      heading: F.product.t,
-      text: 'Ingresa el monto solicitado y el tiempo de funcionamiento del negocio.',
-      inputs: [
-        { name: 'amount', label: 'Monto (S/)',        type: 'number', required: true, min: 1, helper: 'Ejemplo: 8000' },
-        { name: 'years',  label: 'Antigüedad (años)', type: 'number', required: true, min: 0, helper: 'Tiempo de funcionamiento del negocio' },
-      ],
-      footer: 'Evaluar condiciones',
+  // ════════════════════════════════════════════════════════════════════════
+  //  CONFIGURACIÓN DEL DEMO (todo editable aquí)
+  // ════════════════════════════════════════════════════════════════════════
+  const CFG = {
+    clients: {
+      '12345678': { name: 'Carlos Mendoza',  status: 'recurrente' },
+      '87654321': { name: 'Ana Ríos Torres', status: 'nuevo' },
     },
-  }, data => verify(data));
-}
+    segmento: 'AA',
 
-// ── 6. ORION VERIFY ────────────────────────────────────────────────────────
-async function verify(data) {
-  F.amount = parseFloat(data.amount);
-  F.years  = parseFloat(data.years);
-  outReply(Object.keys(REG).pop(), `📋 *Datos de la operación*\nMonto: S/ ${fmtN(F.amount)}\nAntigüedad: ${fmtN(F.years)} año(s)`);
-  await typing(1700);
-  const v = CFG.verify;
-  WA.buttons({
-    header: 'Paso 3 de 4 · Verify',
-    body: `*${F.product.t}* — condiciones del producto\n\n` +
-          `✅ Segmento: *${CFG.segmento}*\n` +
-          `✅ Número de entidades: ${v.entidades}\n` +
-          `✅ Calificación actual: ${v.calificacion}\n` +
-          `✅ Monto: S/ ${fmtN(F.amount)}\n` +
-          `✅ Antigüedad del negocio: ${fmtN(F.years)} año(s)\n` +
-          `✅ % Saldo pagado: ${v.saldoPagado}\n\n` +
-          `🟢 *Resultado: APTO*`,
-    footer: 'ORION Verify',
-    buttons: [{ id: 'explain', title: 'Ver guía operativa' }],
-  }, () => explain());
-}
+    checkRules: [
+      { l: 'Segmento',                                              v: () => CFG.segmento },
+      { l: 'Lista negativa',                                        v: () => 'No registra' },
+      { l: 'Calificación RCC actual',                               v: () => 'Normal' },
+      { l: 'Calif. Deficiente, Dudoso y Pérdida (últ. 6 meses)',    v: () => 'Sin registros' },
+      { l: 'Castigado, judicial o venta (últ. 24 meses)',           v: () => 'Sin registros' },
+    ],
 
-// ── 7. ORION EXPLAIN ───────────────────────────────────────────────────────
-async function explain() {
-  await typing(1300);
-  WA.image(ratioImage(CFG.segmento),
-    `*Ratio de cuota límite* — Pequeña empresa\nSegmento del cliente: *${CFG.segmento}* (columna resaltada)`);
-  await typing(1100);
-  WA.buttons({
-    header: 'Paso 4 de 4 · Explain',
-    body: `*Guía operativa*\n${F.product.t} · S/ ${fmtN(F.amount)} · ${fmtN(F.years)} año(s)\n\n` +
-          `🏷️ Segmento: *${CFG.segmento}*\n` +
-          CFG.explain.map(([e, l, v]) => `${e} ${l}: ${v}`).join('\n'),
-    footer: `ORION Explain · ${F.client.name}`,
-    buttons: [{ id: 'fin', title: 'Finalizar' }, { id: 'new', title: 'Nueva consulta' }],
-  }, id => id === 'fin' ? finish() : askDocType());
-}
+    fuentes: [
+      { t: 'Dependiente',    d: 'Ingresos por planilla',            i: 'building' },
+      { t: 'Independiente',  d: 'Ingresos por servicios propios',   i: 'briefcase' },
+      { t: 'Negocio propio', d: 'Ingresos de actividad comercial',  i: 'store' },
+    ],
+    destinos: [
+      { t: 'Activo fijo',         d: 'Maquinaria, equipos o local',     i: 'box' },
+      { t: 'Capital de trabajo',  d: 'Mercadería, insumos y operación', i: 'trend' },
+      { t: 'Consumo',             d: 'Gastos personales',               i: 'cart' },
+    ],
 
-async function finish() {
-  await typing(700);
-  WA.buttons({
-    body: `✅ Evaluación de *${F.client.name}* registrada.\n\nPuedes atender al siguiente cliente.`,
-    footer: 'ORION · Caja Trujillo',
-    buttons: [{ id: 'new', title: 'Nueva consulta' }],
-  }, () => askDocType());
-  F.step = 'idle';
-}
+    products: [
+      { t: 'Disfruta +',        d: 'Crédito de consumo',     i: 'cart',      ok: false },
+      { t: 'Emprende +',        d: 'Crédito emprendedor',    i: 'trend',     ok: false },
+      { t: 'Microemprendedor',  d: 'Pequeña empresa',        i: 'store',     ok: true  },
+      { t: '+ Negocios',        d: 'Crédito empresarial',    i: 'briefcase', ok: true  },
+      { t: 'Campaña Crediagil', d: 'Campaña vigente',        i: 'zap',       ok: true  },
+      { t: 'Campaña Navideña',  d: 'Campaña de temporada',   i: 'gift',      ok: true  },
+    ],
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  TEXTO LIBRE (barra de mensaje)
-// ═══════════════════════════════════════════════════════════════════════════
-async function sendMsg() {
-  const inp = document.getElementById('msg-input');
-  const txt = inp.value.trim();
-  if (!txt) return;
-  inp.value = '';
-  outText(txt);
+    verify: { entidades: '2', calificacion: 'Normal', saldoPagado: '60%' },
 
-  if (F.step === 'dni') {
-    if (/^\d{8}$/.test(txt)) return runCheck(txt);
-    await typing(700);
-    return WA.text('⚠️ El DNI debe tener *8 dígitos numéricos*. Inténtalo nuevamente.');
+    ratioTable: {
+      title: 'Ratio de cuota límite en función al ingreso neto — Pequeña empresa',
+      cols: ['AAA', 'AA', 'A', 'B', 'C'],
+      rows: [
+        { label: 'Hasta S/ 2,000',       vals: ['≤ 80%', '≤ 80%', '≤ 70%', '≤ 60%', '≤ 60%'] },
+        { label: 'S/ 2,000 – 10,000',    vals: ['≤ 85%', '≤ 85%', '≤ 80%', '≤ 70%', '≤ 65%'] },
+        { label: 'Más de S/ 10,000',     vals: ['≤ 90%', '≤ 90%', '≤ 80%', '≤ 75%', '≤ 70%'] },
+      ],
+    },
+    explain: {
+      nivel: 'Líder',
+      conds: [
+        { l: 'Documento del negocio', v: 'Declaración jurada',  i: 'file' },
+        { l: 'Garantía',              v: 'Patrimonio personal', i: 'landmark' },
+        { l: 'TEA mínima',            v: '45%',                 i: 'percent' },
+        { l: 'Excepciones',           v: 'No aplica',           i: 'alert' },
+        { l: 'Requiere cónyuge',      v: 'Sí',                  i: 'users', yes: true },
+      ],
+    },
+  };
+
+  const STEPS = ['Check', 'Match', 'Verify', 'Explain'];
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  UTILIDADES
+  // ════════════════════════════════════════════════════════════════════════
+  function updateOsTime() {
+    document.getElementById('os-time').textContent =
+      new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
   }
-  const l = txt.toLowerCase();
-  if (['inicio', 'iniciar', 'consulta', 'menu', 'menú', 'hola', 'buenas'].some(k => l.includes(k))) return menu();
-  await typing(700);
-  if (active) return WA.text('Usa las opciones del último mensaje para continuar 👇');
-  WA.text('Escribe *inicio* para comenzar una nueva consulta.');
-}
+  updateOsTime(); setInterval(updateOsTime, 10000);
 
-menu(true);
+  const box = document.getElementById('messages');
+  const statusEl = document.getElementById('ch-status');
+  const STATUS_ONLINE = statusEl.innerHTML;
+
+  let flow = {};
+  function resetFlow() {
+    flow = { step: 'idle', docType: 'DNI', dni: '', client: null, fuente: null, destino: null,
+             product: null, amount: 0, years: 0, formRow: null };
+  }
+  resetFlow();
+
+  const TICKS = `<svg viewBox="0 0 16 11"><path fill="#53bdeb" d="M11.07.65a.75.75 0 0 1 .03 1.06l-6 6.5a.75.75 0 0 1-1.1 0L1.45 5.47a.75.75 0 1 1 1.1-1.02l2 2.15 5.46-5.92a.75.75 0 0 1 1.06-.03zm3.5 0a.75.75 0 0 1 .03 1.06l-6 6.5a.75.75 0 0 1-1.07.03l-.5-.47a.75.75 0 1 1 1.03-1.09l-.05.04 5.5-5.97a.75.75 0 0 1 1.06-.1z"/></svg>`;
+
+  const sleep  = ms => new Promise(r => setTimeout(r, ms));
+  const hhmm   = () => new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+  const fmt    = n => Number(n).toLocaleString('es-PE');
+  const scroll = () => { box.scrollTop = box.scrollHeight; };
+  const initials = n => n.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+  function addMsg(html, dir = 'in', extraClass = '') {
+    const row = document.createElement('div');
+    row.className = `msg-row ${dir}`;
+    const meta = `<div class="msg-meta"><span class="msg-time">${hhmm()}</span>${dir === 'out' ? `<span class="ticks">${TICKS}</span>` : ''}</div>`;
+    row.innerHTML = `<div class="bubble ${extraClass}">${html}${meta}</div>`;
+    box.appendChild(row);
+    scroll();
+    return Promise.resolve(row);
+  }
+  const addOut = (icon, text) => addMsg(`<span class="out-line">${ic(icon)}<span>${text}</span></span>`, 'out');
+
+  async function showTyping(ms = 1200) {
+    const row = document.createElement('div');
+    row.className = 'typing-row';
+    row.innerHTML = `<div class="typing-bub"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>`;
+    box.appendChild(row); scroll();
+    statusEl.textContent = 'escribiendo…';
+    await sleep(ms);
+    row.remove();
+    statusEl.innerHTML = STATUS_ONLINE;
+  }
+
+  function lock(el) {
+    const row = el && el.closest ? el.closest('.msg-row') : el;
+    if (!row) return;
+    row.classList.add('locked');
+    row.querySelectorAll('button, input, select').forEach(e => e.disabled = true);
+  }
+
+  // Cabecera estándar de tarjeta ORION
+  function cardHead(icon, module, title, stepIdx) {
+    const stepper = stepIdx == null ? '' : `
+      <div class="stepper">
+        ${STEPS.map((s, i) => `
+          <div class="stp ${i < stepIdx ? 'done' : i === stepIdx ? 'act' : ''}">
+            <div class="stp-bar"></div><div class="stp-l">${s}</div>
+          </div>`).join('')}
+      </div>`;
+    return `
+      <div class="ocard-hd">
+        <div class="ocard-ico">${ic(icon)}</div>
+        <div class="ocard-tx">
+          <div class="brand">ORION · ${module}</div>
+          <div class="ocard-t">${title}</div>
+        </div>
+        ${stepIdx == null ? '' : `<span class="step-pill">${stepIdx + 1} de ${STEPS.length}</span>`}
+      </div>${stepper}`;
+  }
+
+  // Reglas: se pintan "cargando" y luego se aprueban una a una
+  function rulesHtml(rules) {
+    return `<div class="rules">${rules.map(r => `
+      <div class="rl">
+        <span class="ck spin"></span>
+        <span class="rl-l">${r.l}</span>
+        <span class="rl-v">${r.v}</span>
+      </div>`).join('')}</div>`;
+  }
+  async function resolveRules(scope, gap = 430) {
+    for (const rl of scope.querySelectorAll('.rl')) {
+      await sleep(gap);
+      const ck = rl.querySelector('.ck');
+      ck.className = 'ck ok';
+      ck.innerHTML = ic('check');
+      rl.classList.add('done');
+    }
+  }
+  function verdictHtml(title, sub) {
+    return `
+      <div class="verdict">
+        <div class="verdict-ico">${ic('shield')}</div>
+        <div><div class="verdict-t">${title}</div><div class="verdict-s">${sub}</div></div>
+      </div>`;
+  }
+
+  function optionsHtml(options, handler) {
+    return `<div class="opts">${options.map((o, i) => `
+      <div class="opt" onclick="${handler}(this, ${i})">
+        <div class="opt-ico">${ic(o.i)}</div>
+        <div class="opt-tx"><div class="opt-t">${o.t}</div><div class="opt-d">${o.d}</div></div>
+        <span class="radio"></span>
+      </div>`).join('')}</div>`;
+  }
+
+  function selectOpt(el) {
+    el.classList.add('sel');
+    lock(el);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  1. BIENVENIDA
+  // ════════════════════════════════════════════════════════════════════════
+  async function showMenu(first = false) {
+    resetFlow();
+    await showTyping(first ? 900 : 700);
+    await addMsg(`
+      ${first ? 'Hola, soy el <b>Agente ORION</b> de Caja Trujillo.<br>' : ''}
+      Puedo <b>precalificar a un cliente</b> con su documento de identidad y acompañarte hasta la guía operativa.
+      <div class="bub-btns">
+        <button class="bb-btn" onclick="askDocument(this)">${ic('search')} Iniciar consulta</button>
+        <button class="bb-btn" onclick="showHelp(this)">${ic('help')} Ayuda</button>
+      </div>
+    `);
+  }
+
+  async function showHelp(btn) {
+    lock(btn);
+    await addOut('help', 'Ayuda');
+    await showTyping(900);
+    const mods = [
+      ['Check',   'Precalificación por documento'],
+      ['Match',   'Productos aptos según el perfil'],
+      ['Verify',  'Condiciones del producto elegido'],
+      ['Explain', 'Lineamientos y guía operativa'],
+    ];
+    await addMsg(`
+      El proceso tiene cuatro etapas:
+      <div class="ocard">
+        ${cardHead('layers', 'FLUJO', 'Etapas de evaluación')}
+        ${mods.map((m, i) => `
+          <div class="mod">
+            <span class="mod-n">${i + 1}</span>
+            <div><div class="mod-t">${m[0]}</div><div class="mod-d">${m[1]}</div></div>
+          </div>`).join('')}
+      </div>
+      <div class="bub-btns">
+        <button class="bb-btn" onclick="askDocument(this)">${ic('search')} Iniciar consulta</button>
+      </div>
+    `);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  2. DOCUMENTO
+  // ════════════════════════════════════════════════════════════════════════
+  async function askDocument(btn) {
+    if (btn) { lock(btn); await addOut('search', 'Iniciar consulta'); }
+    await showTyping(900);
+    flow.formRow = await addMsg(`
+      Ingresa el documento del cliente para iniciar la precalificación.
+      <div class="ocard">
+        ${cardHead('id', 'CHECK', 'Identificación del cliente', 0)}
+        <div class="form">
+          <label class="fld-l">Tipo de documento</label>
+          <div class="fld">
+            <span class="fld-a">${ic('id')}</span>
+            <select class="f-doctype"><option value="DNI">DNI — Documento Nacional de Identidad</option></select>
+          </div>
+          <label class="fld-l">Número de documento</label>
+          <div class="fld">
+            <span class="fld-a">${ic('user')}</span>
+            <input class="f-docnum" type="text" inputmode="numeric" maxlength="8" placeholder="8 dígitos" autocomplete="off"
+                   oninput="this.value=this.value.replace(/\\D/g,'');this.closest('.form').querySelector('.fld-err').classList.remove('show')"
+                   onkeydown="if(event.key==='Enter')submitDocument(this)">
+          </div>
+          <div class="fld-err">${ic('info')} El DNI debe tener 8 dígitos.</div>
+          <button class="btn-p" onclick="submitDocument(this)">Consultar ${ic('arrow')}</button>
+        </div>
+      </div>
+    `);
+    flow.step = 'dni';
+    const inp = flow.formRow.querySelector('.f-docnum');
+    if (inp) inp.focus();
+  }
+
+  function submitDocument(el) {
+    const form = el.closest('.form');
+    const type = form.querySelector('.f-doctype').value;
+    const num  = form.querySelector('.f-docnum').value.trim();
+    if (!/^\d{8}$/.test(num)) { form.querySelector('.fld-err').classList.add('show'); return; }
+    lock(el);
+    runCheck(type, num);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  3. ORION CHECK
+  // ════════════════════════════════════════════════════════════════════════
+  async function runCheck(type, dni) {
+    flow.step = 'check';
+    flow.docType = type;
+    flow.dni = dni;
+    flow.client = CFG.clients[dni] || { name: `Cliente ${dni}`, status: 'nuevo' };
+
+    await addOut('id', `${type} ${dni}`);
+    await showTyping(1300);
+
+    const c = flow.client;
+    const row = await addMsg(`
+      <div class="ocard">
+        ${cardHead('shield', 'CHECK', 'Precalificación del cliente', 0)}
+        <div class="client">
+          <div class="avatar">${initials(c.name)}</div>
+          <div>
+            <div class="client-n">${c.name}</div>
+            <div class="client-m">${type} ${dni} <span class="pill neu">${c.status}</span></div>
+          </div>
+        </div>
+        ${rulesHtml(CFG.checkRules.map(r => ({ l: r.l, v: r.v() })))}
+        <div class="js-verdict"></div>
+      </div>
+    `);
+
+    await resolveRules(row);
+    await sleep(350);
+    row.querySelector('.js-verdict').innerHTML =
+      verdictHtml('APTO', `Cumple las ${CFG.checkRules.length} reglas · Segmento ${CFG.segmento}`);
+    scroll();
+
+    await askFuente();
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  3.2 FUENTE Y DESTINO
+  // ════════════════════════════════════════════════════════════════════════
+  async function askFuente() {
+    flow.step = 'fuente';
+    await showTyping(1000);
+    await addMsg(`
+      Selecciona la <b>fuente de ingreso</b> del cliente:
+      <div class="ocard">${optionsHtml(CFG.fuentes, 'pickFuente')}</div>
+    `);
+  }
+
+  async function pickFuente(el, i) {
+    selectOpt(el);
+    flow.fuente = CFG.fuentes[i];
+    await addOut(flow.fuente.i, flow.fuente.t);
+    flow.step = 'destino';
+    await showTyping(900);
+    await addMsg(`
+      Ahora indica el <b>destino del crédito</b>:
+      <div class="ocard">${optionsHtml(CFG.destinos, 'pickDestino')}</div>
+    `);
+  }
+
+  async function pickDestino(el, i) {
+    selectOpt(el);
+    flow.destino = CFG.destinos[i];
+    await addOut(flow.destino.i, flow.destino.t);
+    await doMatch();
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  4. ORION MATCH
+  // ════════════════════════════════════════════════════════════════════════
+  async function doMatch() {
+    flow.step = 'match';
+    await showTyping(1500);
+    const nOk = CFG.products.filter(p => p.ok).length;
+    const nNo = CFG.products.length - nOk;
+    await addMsg(`
+      Productos evaluados para <b>${flow.client.name}</b>. Toca uno apto para continuar.
+      <div class="ocard">
+        ${cardHead('target', 'MATCH', `${flow.fuente.t} · ${flow.destino.t}`, 1)}
+        <div class="summary-bar"><span><b>${nOk}</b> aptos</span><span>${nNo} no aptos</span></div>
+        <div class="opts">
+          ${CFG.products.map((p, i) => `
+            <div class="opt ${p.ok ? '' : 'dis'}" ${p.ok ? `onclick="doSelectProduct(this, ${i})"` : ''}>
+              <div class="opt-ico">${ic(p.i)}</div>
+              <div class="opt-tx"><div class="opt-t">${p.t}</div><div class="opt-d">${p.d}</div></div>
+              <span class="pill ${p.ok ? 'ok' : 'no'}">${p.ok ? 'Apto' : 'No apto'}</span>
+              ${p.ok ? `<span class="opt-arrow">${ic('chev')}</span>` : ''}
+            </div>`).join('')}
+        </div>
+      </div>
+    `);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  5. PRODUCTO Y DATOS
+  // ════════════════════════════════════════════════════════════════════════
+  async function doSelectProduct(el, i) {
+    selectOpt(el);
+    flow.product = CFG.products[i];
+    await addOut(flow.product.i, flow.product.t);
+    flow.step = 'params';
+    await showTyping(1000);
+    await addMsg(`
+      Completa los datos de la operación:
+      <div class="ocard">
+        ${cardHead(flow.product.i, 'VERIFY', flow.product.t, 2)}
+        <div class="form">
+          <label class="fld-l">Monto solicitado</label>
+          <div class="fld">
+            <span class="fld-a">S/</span>
+            <input class="f-amount" type="number" inputmode="numeric" placeholder="0" min="1">
+          </div>
+          <label class="fld-l">Tiempo de funcionamiento del negocio</label>
+          <div class="fld">
+            <span class="fld-a">${ic('calendar')}</span>
+            <input class="f-years" type="number" inputmode="decimal" placeholder="0" min="0" step="0.5">
+            <span class="fld-a suf">años</span>
+          </div>
+          <div class="fld-err">${ic('info')} Completa el monto y la antigüedad del negocio.</div>
+          <button class="btn-p" onclick="doVerify(this)">Evaluar condiciones ${ic('arrow')}</button>
+        </div>
+      </div>
+    `);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  6. ORION VERIFY
+  // ════════════════════════════════════════════════════════════════════════
+  async function doVerify(el) {
+    const form = el.closest('.form');
+    const amount = parseFloat(form.querySelector('.f-amount').value);
+    const years  = parseFloat(form.querySelector('.f-years').value);
+    if (!amount || amount <= 0 || isNaN(years) || years < 0) {
+      form.querySelector('.fld-err').classList.add('show');
+      return;
+    }
+    lock(el);
+    flow.amount = amount;
+    flow.years  = years;
+    flow.step   = 'verify';
+
+    await addOut('coins', `S/ ${fmt(amount)} · ${fmt(years)} año(s) de negocio`);
+    await showTyping(1400);
+
+    const rules = [
+      { l: 'Segmento',               v: CFG.segmento },
+      { l: 'Número de entidades',    v: CFG.verify.entidades },
+      { l: 'Calificación actual',    v: CFG.verify.calificacion },
+      { l: 'Monto',                  v: `S/ ${fmt(amount)}` },
+      { l: 'Antigüedad del negocio', v: `${fmt(years)} año(s)` },
+      { l: '% Saldo pagado',         v: CFG.verify.saldoPagado },
+    ];
+
+    const row = await addMsg(`
+      <div class="ocard">
+        ${cardHead('clipboard', 'VERIFY', `Condiciones · ${flow.product.t}`, 2)}
+        ${rulesHtml(rules)}
+        <div class="js-verdict"></div>
+      </div>
+      <div class="js-btns"></div>
+    `);
+
+    await resolveRules(row, 380);
+    await sleep(350);
+    row.querySelector('.js-verdict').innerHTML =
+      verdictHtml('APTO', 'Cumple todas las condiciones del producto');
+    row.querySelector('.js-btns').innerHTML = `
+      <div class="bub-btns">
+        <button class="bb-btn" onclick="doExplain(this)">${ic('file')} Ver guía operativa</button>
+      </div>`;
+    scroll();
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  7. ORION EXPLAIN
+  // ════════════════════════════════════════════════════════════════════════
+  async function doExplain(el) {
+    lock(el);
+    flow.step = 'explain';
+    await addOut('file', 'Ver guía operativa');
+    await showTyping(1300);
+
+    const t = CFG.ratioTable;
+    const s = t.cols.indexOf(CFG.segmento);
+    const e = CFG.explain;
+
+    await addMsg(`
+      <div class="ocard">
+        ${cardHead('award', 'EXPLAIN', 'Guía operativa', 3)}
+
+        <div class="sgrid">
+          <div class="sg"><div class="sg-l">Cliente</div><div class="sg-v">${flow.client.name}</div></div>
+          <div class="sg"><div class="sg-l">Producto</div><div class="sg-v">${flow.product.t}</div></div>
+          <div class="sg"><div class="sg-l">Monto</div><div class="sg-v">S/ ${fmt(flow.amount)}</div></div>
+          <div class="sg"><div class="sg-l">Antigüedad</div><div class="sg-v">${fmt(flow.years)} año(s)</div></div>
+          <div class="sg"><div class="sg-l">Fuente</div><div class="sg-v">${flow.fuente.t}</div></div>
+          <div class="sg"><div class="sg-l">Destino</div><div class="sg-v">${flow.destino.t}</div></div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-t">${ic('layers')} Segmento del cliente</div>
+          <div class="seg">
+            <div class="seg-badge">${CFG.segmento}</div>
+            <div><div class="seg-t">Segmento ${CFG.segmento}</div><div class="seg-d">Asignado en la precalificación. Define el ratio de cuota límite aplicable.</div></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-t">${ic('grid')} Ratio de cuota límite</div>
+          <div class="tbl-cap">${t.title}</div>
+          <div class="tbl">
+            <table>
+              <thead><tr>
+                <th>Ingreso neto</th>
+                ${t.cols.map((c, i) => `<th class="${i === s ? 'hl' : ''}">${c}</th>`).join('')}
+              </tr></thead>
+              <tbody>
+                ${t.rows.map(r => `<tr>
+                  <td>${r.label}</td>
+                  ${r.vals.map((v, i) => `<td class="${i === s ? 'hl' : ''}">${v}</td>`).join('')}
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+          <div class="tbl-note">${ic('check')} Columna aplicable al segmento ${CFG.segmento}</div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-t">${ic('shield')} Nivel de aprobación</div>
+          <span class="lvl">${ic('award')} ${e.nivel}</span>
+        </div>
+
+        <div class="sec">
+          <div class="sec-t">${ic('clipboard')} Condiciones</div>
+          ${e.conds.map(c => `
+            <div class="cond">
+              <div class="cond-ico">${ic(c.i)}</div>
+              <span class="cond-l">${c.l}</span>
+              <span class="cond-v ${c.yes ? 'yes' : ''}">${c.v}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="bub-btns">
+        <button class="bb-btn" onclick="doFinish(this)">${ic('flag')} Finalizar</button>
+      </div>
+    `, 'in', 'wide');
+  }
+
+  async function doFinish(el) {
+    lock(el);
+    await addOut('flag', 'Operación finalizada');
+    await showTyping(700);
+    await addMsg(`
+      La evaluación de <b>${flow.client.name}</b> quedó registrada. Puedes atender al siguiente cliente.
+      <div class="bub-btns">
+        <button class="bb-btn" onclick="askDocument(this)">${ic('refresh')} Nueva consulta</button>
+      </div>
+    `);
+    resetFlow();
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  //  TEXTO LIBRE
+  // ════════════════════════════════════════════════════════════════════════
+  async function sendMsg() {
+    const inp = document.getElementById('msg-input');
+    const txt = inp.value.trim();
+    if (!txt) return;
+    inp.value = '';
+
+    if (flow.step === 'dni' && /^\d{8}$/.test(txt)) {
+      lock(flow.formRow);
+      return runCheck('DNI', txt);
+    }
+
+    await addMsg(txt, 'out');
+    const l = txt.toLowerCase();
+
+    if (flow.step === 'dni' && /^\d+$/.test(txt)) {
+      await showTyping(700);
+      return addMsg('El DNI debe tener 8 dígitos. Inténtalo nuevamente.');
+    }
+    if (['inicio', 'iniciar', 'consulta', 'consultar', 'dni', 'empezar'].some(k => l.includes(k))) return askDocument();
+    if (['hola', 'buenas', 'menu', 'menú'].some(k => l.includes(k))) return showMenu();
+    await showTyping(800);
+    if (l.includes('ayuda') || l.includes('help'))
+      return addMsg('Escribe <b>inicio</b> o usa <b>Iniciar consulta</b> para precalificar a un cliente con su DNI.');
+    if (flow.step !== 'idle') return addMsg('Continúa con las opciones del mensaje anterior para avanzar.');
+    addMsg('Escribe <b>inicio</b> para comenzar una nueva consulta.');
+  }
+
+  showMenu(true);
 </script>
 </body>
 </html>
